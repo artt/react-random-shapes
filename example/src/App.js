@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { ExampleComponent } from 'random-shape'
+import { RandomShape } from 'random-shape'
 import 'random-shape/dist/index.css'
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <RandomShape width={400} height={100} options={{endA: "zz"}}/>
 }
 
 export default App
