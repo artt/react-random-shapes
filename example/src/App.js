@@ -4,7 +4,7 @@ import { RandomShape } from 'random-shape'
 import 'random-shape/dist/index.css'
 
 const App = () => {
-  return <RandomShape width={400} height={100} options={{aEdge: "top"}}/>
+  return <RandomShape width={600} height={300} options={{aEdge: "top"}}/>
 }
 
 export default App
