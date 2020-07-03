@@ -41,7 +41,8 @@ export function RandomShape({ width, height, options }) {
 		bSD: 0.2*height,
 		sd: 0.1*height,
 		sdAngle: Math.PI / 6,
-		sections: 2,
+		sections: 1,
+		showHandles: false,
 		...options
 	}
 	
@@ -90,7 +91,7 @@ export function RandomShape({ width, height, options }) {
   return(
 		<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
 			<path d={pathString} fill="red" />
-			{
+			{opt.showHandles &&
 				// control points
 				data.map(x => {
 					return(
