@@ -41,11 +41,12 @@ export function RandomHLine({ width, height, options }) {
 		leftRoom: 0.3*height,
 		rightPos: 0.5*height,
 		rightRoom: 0.3*height,
-		midSD: 0.2*height,
-		angleSD: Math.PI / 3,
 		sections: 1,
+		midRoom: 0.2*height,
+		angleRoom: Math.PI / 3,
 		fillTop: "transparent",
 		fillBottom: "transparent",
+		strokeMid: "black",
 		showHandles: false,
 		...options
 	}
@@ -60,7 +61,7 @@ export function RandomHLine({ width, height, options }) {
 	const pts_center_x = [...Array(opt.sections + 1).keys()].map(x => x / opt.sections * width)
 
 	const cPoints = [[0, finalA]]
-		.concat(pts_center_x.slice(1, opt.sections).map(x => [jitter(x, opt.midSD, 0, width), jitter(getY(x, slope, finalA), opt.midSD, 0, height)]))
+		.concat(pts_center_x.slice(1, opt.sections).map(x => [jitter(x, opt.midRoom, 0, width), jitter(getY(x, slope, finalA), opt.midRoom, 0, height)]))
 		.concat([[width, finalB]])
 
 	const distance = getMinDistance(cPoints, 2 * Math.max(width, height))
@@ -68,7 +69,7 @@ export function RandomHLine({ width, height, options }) {
 	let data = Array(opt.sections + 1)
 	for (let i = 0; i < cPoints.length; i ++) {
 		data[i] = {c: cPoints[i]}
-		data[i].angle = jitter(angle, opt.angleSD)
+		data[i].angle = jitter(angle, opt.angleRoom)
 		data[i].distance = distance
 		data[i].ctrl = movePoint(cPoints[i][0], cPoints[i][1], data[i].angle, (i === 0 ? 1 : -1) * distance / 2, {yMin: 0, yMax: height})
 		data[i].ctrl_alt = movePoint(cPoints[i][0], cPoints[i][1], data[i].angle, (i === 0 ? -1 : 1) * distance / 2)
@@ -84,7 +85,7 @@ export function RandomHLine({ width, height, options }) {
 		<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
 			<path d={"M 0 0 " + "V " + data[0].c[1].toFixed(2) + " " + midCurve + "V 0 Z"} fill={opt.fillTop} />
 			<path d={"M 0 " + height + " " + "V " + data[0].c[1].toFixed(2) + " " + midCurve + "V " + height + " Z"} fill={opt.fillBottom} />
-			<path d={"M 0 " + data[0].c[1].toFixed(2) + " " + midCurve} stroke="black" fill="transparent" />
+			<path d={"M 0 " + data[0].c[1].toFixed(2) + " " + midCurve} stroke={opt.strokeMid} fill="transparent" />
 			{opt.showHandles &&
 				// control points
 				data.map((x, i) => {
