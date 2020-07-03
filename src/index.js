@@ -40,7 +40,8 @@ export function RandomShape({ width, height, options }) {
 		bPos: 0.5*height,
 		bSD: 0.2*height,
 		sd: 0.1*height,
-		sections: 3,
+		sdAngle: Math.PI / 6,
+		sections: 2,
 		...options
 	}
 	
@@ -60,37 +61,47 @@ export function RandomShape({ width, height, options }) {
 	}
 
 	const cPoints = [[0, finalA]]
-		.concat(pts_center_x.slice(1, pts_center_x.length-1).map(x => jitter(x, getY(x, slope, finalA), opt.sd, opt.sd)))
+		.concat(pts_center_x.slice(1, opt.sections).map(x => jitter(x, getY(x, slope, finalA), opt.sd, opt.sd)))
 		.concat([[width, finalB]])
 
 	const distance = getMinDistance(cPoints, 2 * Math.max(width, height))
 	console.log("distance", distance)	
 	console.log("angle", angle)
-	let ctrlPoints = cPoints.map(xy => movePoint(xy[0], xy[1], angle, -1 * distance / 2))
-	// edit ctrlPoints[0]
-	ctrlPoints[0] = movePoint(cPoints[0][0], cPoints[0][1], angle, distance / 2)
-	console.log("ctrlPoints", ctrlPoints)
+
+	let data = Array(opt.sections + 1)
+	for (let i = 0; i < cPoints.length; i ++) {
+		data[i] = {c: cPoints[i]}
+		data[i].angle = angle + (Math.random() * 2 * opt.sdAngle) - opt.sdAngle
+		data[i].distance = distance
+		data[i].ctrl = movePoint(cPoints[i][0], cPoints[i][1], data[i].angle, (i === 0 ? 1 : -1) * distance / 2)
+		data[i].ctrl_alt = movePoint(cPoints[i][0], cPoints[i][1], data[i].angle, (i === 0 ? -1 : 1) * distance / 2)
+	}
 
 	let pathString = "M 0 0 "
-											+ "V " + finalA + " "
-											+ "C " + ctrlPoints[0][0] + " " + ctrlPoints[0][1] + ", " + ctrlPoints[1][0] + " " + ctrlPoints[1][1] + ", " + cPoints[1][0] + " " + cPoints[1][1] + " "
+										+ "V " + data[0].c[1] + " "
+										+ "C " + data[0].ctrl[0] + " " + data[0].ctrl[1] + ", " + data[1].ctrl[0] + " " + data[1].ctrl[1] + ", " + data[1].c[0] + " " + data[1].c[1] + " "
 	// at this point we're done with the first two cPoints
 	for (let i = 2; i < cPoints.length; i ++) {
-		pathString += "S " + ctrlPoints[i][0] + " " + ctrlPoints[i][1] + ", " + cPoints[i][0] + " " + cPoints[i][1]
+		pathString += "S " + data[i].ctrl[0] + " " + data[i].ctrl[1] + ", " + data[i].c[0] + " " + data[i].c[1] + " "
 	}
 	pathString += "V 0 Z"
-	console.log(pathString) 
+	console.log(pathString)
 
   return(
 		<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
 			<path d={pathString} fill="red" />
 			{
-				// center points
-				cPoints.map(xy => <circle cx={xy[0]} cy={xy[1]} r={4} />)
-			}
-			{
 				// control points
-				ctrlPoints.map(xy => <circle cx={xy[0]} cy={xy[1]} r={2} />)
+				data.map(x => {
+					return(
+						<React.Fragment>
+							<line x1={x.ctrl[0]} y1={x.ctrl[1]} x2={x.ctrl_alt[0]} y2={x.ctrl_alt[1]} stroke="blue" />
+							<circle cx={x.c[0]} cy={x.c[1]} r={4} />
+							<circle cx={x.ctrl[0]} cy={x.ctrl[1]} r={2} />
+							<circle cx={x.ctrl_alt[0]} cy={x.ctrl_alt[1]} r={2} />
+						</React.Fragment>
+					)
+				})
 			}
   	</svg>
   )
