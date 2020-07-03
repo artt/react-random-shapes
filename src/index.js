@@ -38,9 +38,9 @@ export function RandomHLine({ width, height, options }) {
 
 	const opt = {
 		leftPos: 0.5*height,
-		leftSD: 0.3*height,
+		leftRoom: 0.3*height,
 		rightPos: 0.5*height,
-		rightSD: 0.3*height,
+		rightRoom: 0.3*height,
 		midSD: 0.2*height,
 		angleSD: Math.PI / 3,
 		sections: 1,
@@ -52,8 +52,8 @@ export function RandomHLine({ width, height, options }) {
 	
 	console.log(opt)
 
-	const finalA = jitter(opt.leftPos, opt.leftSD, 0, height)
-	const finalB = jitter(opt.rightPos, opt.rightSD, 0, height)
+	const finalA = jitter(opt.leftPos, opt.leftRoom, 0, height)
+	const finalB = jitter(opt.rightPos, opt.rightRoom, 0, height)
 	const slope = (finalB - finalA) / width
 	const angle = Math.atan(slope)
 
