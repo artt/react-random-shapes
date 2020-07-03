@@ -36,17 +36,17 @@ For all shapes, `width` and `height` attributes are required. Additionally, vari
 
 Generates a horizontal line (going roughly from left to right). Options available are:
 
-* `leftPos=0.5*height` Vertical position of the left handle.
-* `leftRoom=0.3*height` Size of the [1-D] window in which `leftPos` could wiggle around.
-* `rightPos=0.5*height` Similar to `leftPos`
-* `rightRoom=0.3*height` Similar to `leftRoom`
-* `sections=1` Number of section the curve will be divided into.
-* `midRoom=0.2*height` Size of the [2-D] window in which the middle control points could wiggle around.
-* `angleRoom=Math.PI / 3` Size of the window in which the angle of the control point, as measured from the control point, could wiggle around.
-* `fillTop="transparent"` Fill of the top part.
-* `fillBottom="transparent"` Fill of the bottom part.
-* `strokeMid="black"` Stroke style of the dividing line.
-* `showHandles=false` Show the handles and control points (for debug purpose).
+* `leftPos` (default `0.5*height`) Vertical position of the left handle.
+* `leftRoom` (default `0.3*height`) Size of the [1-D] window in which `leftPos` could wiggle around.
+* `rightPos` (default `0.5*height`) Similar to `leftPos`.
+* `rightRoom` (default `0.3*height`) Similar to `leftRoom`.
+* `sections` (default `1`) Number of section the curve will be divided into.
+* `midRoom` (default `0.2*height`) Size of the [2-D] window in which the middle control points could wiggle around.
+* `angleRoom` (default `Math.PI / 3`) Size of the window in which the angle of the control point, as measured from the control point, could wiggle around.
+* `fillTop` (default `"transparent"`) Fill of the top part.
+* `fillBottom` (default `"transparent"`) Fill of the bottom part.
+* `strokeMid` (default `"black"`) Stroke style of the dividing line.
+* `showHandles` (default `false`) Show the handles and control points (for debug purpose).
 
 #### `RandomVLine`
 
