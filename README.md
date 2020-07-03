@@ -1,9 +1,11 @@
 # react-random-shape
 
 Create a random, wavy `svg` image. A few different shapes are planned:
+
 * `RandomHLine`
 * `RandomVLine`
 * `RandomBlob`
+
 This package was inspired by [blobmaker.app](https://www.blobmaker.app/).
 
 [![NPM](https://img.shields.io/npm/v/react-random-shape.svg)](https://www.npmjs.com/package/react-random-shape) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
