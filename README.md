@@ -2,9 +2,9 @@
 
 Create a random, wavy `svg` image. A few different shapes are planned:
 
-* [`RandomHLine`](randomhline)
-* [`RandomVLine`](randomvline)
-* [`RandomBlob`](randomblob)
+* [`RandomHLine`](#randomhline)
+* [`RandomVLine`](#randomvline)
+* [`RandomBlob`](#randomblob)
 
 This package was inspired by [blobmaker.app](https://www.blobmaker.app/).
 
