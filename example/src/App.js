@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { RandomShape } from 'react-random-shape'
+import { RandomHLine } from 'react-random-shape'
 
 const App = () => {
-  return <RandomShape width={600} height={300} options={{aEdge: "top"}}/>
+  return <RandomHLine width={600} height={300} options={{showHandles: false}}/>
 }
 
 export default App
