@@ -1,13 +1,13 @@
-# random-shape
+# react-random-shape
 
 > Create a random, wavy svg image.
 
-[![NPM](https://img.shields.io/npm/v/random-shape.svg)](https://www.npmjs.com/package/random-shape) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-random-shape.svg)](https://www.npmjs.com/package/react-random-shape) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save random-shape
+npm install --save react-random-shape
 ```
 
 ## Usage
@@ -15,12 +15,11 @@ npm install --save random-shape
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'random-shape'
-import 'random-shape/dist/index.css'
+import RandomShape from 'react-random-shape'
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <RandomShape width="500" height="200" />
   }
 }
 ```
