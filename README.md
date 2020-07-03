@@ -36,19 +36,17 @@ For all shapes, `width` and `height` attributes are required. Additionally, vari
 
 Generates a horizontal line (going roughly from left to right). Options available are:
 
-Attribute   	| Description       | Default
------------ 	| ----------------- | --------
-`leftPos`		| Vertical position of the left handle. | `0.5*height`
-`leftRoom`		| Size of the [1-D] window in which `leftPos` could wiggle around. | `0.3*height`
-`rightPos`  	| Similar to `leftPos` | `0.5*height`
-`rightRoom` 	| Similar to `leftRoom` | `0.3*height`
-`sections`		| Number of section the curve will be divided into. | `1`
-`midRoom` 		| Size of the [2-D] window in which the middle control points could wiggle around. | `0.2*height`
-`angleRoom` 	| Size of the window in which the angle of the control point, as measured from the control point, could wiggle around. | `Math.PI / 3`
-`fillTop` 		| Fill of the top part. | `"transparent"`
-`fillBottom` 	| Fill of the bottom part. | `"transparent"`
-`strokeMid`		| Stroke style of the dividing line. | `"black"`
-`showHandles` 	| Show the handles and control points (for debug purpose). | `false`
+* `leftPos=0.5*height` Vertical position of the left handle.
+* `leftRoom=0.3*height` Size of the [1-D] window in which `leftPos` could wiggle around.
+* `rightPos=0.5*height` Similar to `leftPos`
+* `rightRoom=0.3*height` Similar to `leftRoom`
+* `sections=1` Number of section the curve will be divided into.
+* `midRoom=0.2*height` Size of the [2-D] window in which the middle control points could wiggle around.
+* `angleRoom=Math.PI / 3` Size of the window in which the angle of the control point, as measured from the control point, could wiggle around.
+* `fillTop="transparent"` Fill of the top part.
+* `fillBottom="transparent"` Fill of the bottom part.
+* `strokeMid="black"` Stroke style of the dividing line.
+* `showHandles=false` Show the handles and control points (for debug purpose).
 
 #### `RandomVLine`
 
