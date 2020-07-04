@@ -1,4 +1,4 @@
-# react-random-shape
+# react-random-shapes
 
 Create a random, wavy `svg` image. A few different shapes are planned:
 
