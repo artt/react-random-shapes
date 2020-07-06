@@ -8,7 +8,7 @@ Create a random, wavy `svg` image. A few different shapes are planned:
 
 This package was inspired by [blobmaker.app](https://www.blobmaker.app/).
 
-[![NPM](https://img.shields.io/npm/v/react-random-shapes.svg)](https://www.npmjs.com/package/react-random-shape) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-random-shapes.svg)](https://www.npmjs.com/package/react-random-shapes) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
@@ -67,10 +67,6 @@ There are 4 possible modes:
 * `["r", l_bound, u_bound]`: specify the lower and upper boundries for that key.
 
 #### Examples
-
-The following code will create a `RandomHLine` with 4 control points.
-The first point (leftmost) will have the control line that's angled between `0` and `45` degrees.
-The second point will be automatically placed in between the
 
 ```js
 override = [
