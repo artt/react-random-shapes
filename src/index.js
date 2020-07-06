@@ -119,7 +119,6 @@ function 	convertInteriorPoints(width, height, opt, override, initX, slope, inte
 
 }
 
-
 function getMinDistance(a) {
 	let minDistance = Number.POSITIVE_INFINITY
 	for (let i = 0; i < a.length - 1; i ++) {
@@ -131,6 +130,9 @@ function getMinDistance(a) {
 	return minDistance
 }
 
+function getRange(maxNum) {
+	return Array.from(new Array(maxNum), (x, i) => i)
+}
 
 export function RandomHLine({ width, height, options, override, className }) {
 
@@ -173,14 +175,14 @@ export function RandomHLine({ width, height, options, override, className }) {
 		console.log("post-processed override", JSON.parse(JSON.stringify(override)))
 
 	// figure out x points first
-	if (opt.debug) {
-		console.log("0 -", opt.numControls)
-		console.log("1.1 -", [...Array(3).keys()])
-		console.log("1.2 -", [...(Array(3).keys())])
-		console.log("2 -", Array.from(new Array(3), (x, i) => i))
-		console.log("3 -", [0, 1, 2].map(x => x / (opt.numControls - 1) * width))
-	}
-	let initX = [...Array(opt.numControls).keys()].map(x => x / (opt.numControls - 1) * width)
+	// if (opt.debug) {
+	// 	console.log("0 -", opt.numControls)
+	// 	console.log("1.1 -", [...Array(3).keys()])
+	// 	console.log("1.2 -", [...(Array(3).keys())])
+	// 	console.log("2 -", Array.from(new Array(3), (x, i) => i))
+	// 	console.log("3 -", [0, 1, 2].map(x => x / (opt.numControls - 1) * width))
+	// }
+	let initX = getRange(opt.numControls).map(x => x / (opt.numControls - 1) * width)
 	if (opt.debug)
 		console.log("initX", JSON.parse(JSON.stringify(initX)))
 
