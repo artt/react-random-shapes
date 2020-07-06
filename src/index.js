@@ -174,24 +174,37 @@ export function RandomHLine({ width, height, options, override, className }) {
 
 	// figure out x points first
 	let initX = [...Array(opt.numControls).keys()].map(x => x / (opt.numControls - 1) * width)
+	if (opt.debug)
+		console.log("initX", JSON.parse(JSON.stringify(initX)))
 
 	let lastFixed = 0
 	
 	for (let i = 1; i < opt.numControls; i ++) {
+		if (opt.debug) {
+			console.log("---", i)
+		}
 		if (override[i].x[0] === "r") {
 			initX[i] = (override[i].x[1] + override[i].x[2]) / 2
+			if (opt.debug) {
+				console.log(i, "is in r mode...")
+				console.log(i, initX[i])
+			}
 			if (i - lastFixed > 1) {
 				// do linear interpolation from the last fixed point
 				const lengthInBetween = (initX[i] - initX[lastFixed]) / (i - lastFixed)
-				for (let j = lastFixed + 1; j < i; j ++)
+				for (let j = lastFixed + 1; j < i; j ++) {
 					initX[j] = initX[j - 1] + lengthInBetween
+					if (opt.debug) {
+						console.log(j, initX[j])
+					}
+				}
 			}
 			lastFixed = i
 		}
 	}
 
 	if (opt.debug)
-		console.log("initX", initX)
+		console.log("initX at the end", initX)
 
 	// init data array
 	let data = Array(opt.numControls)
