@@ -162,6 +162,65 @@ function preProcessOverride(width, height, opt, override) {
 
 }
 
+function checkOverride(width, opt, override) {
+	// some checks
+	if (override.length != opt.numControls) {
+		console.warn("Number of control points and the length of the override array are not equal."
+			+ " " + "The numControls option will be disregarded.")
+		opt.numControls = override.length
+	}
+	// the endpoints must be ["r", x, x]
+	if (!compareArrays(override[0]["x"], ["r", 0, 0])) {
+		console.error("The first element of override array must have x property of [0, 0].")
+	}
+	if (!compareArrays(override[opt.numControls - 1]["x"], ["r", width, width])) {
+		console.error("The first element of override array must have x property of [0, 0].")
+	}
+}
+
+function convertEndPoints(opt, override) {
+	if (override[0].y[0] === "w")
+		override[0].y = ["r", opt.leftPos - override[0].y[1]/2, opt.leftPos + override[0].y[1]/2]
+	if (override[opt.numControls - 1].y[0] === "w")
+		override[opt.numControls - 1].y = ["r", opt.leftPos - override[opt.numControls - 1].y[1]/2, opt.leftPos + override[opt.numControls - 1].y[1]/2]
+}
+
+function 	convertInteriorPoints(width, height, opt, override, initX, slope, angle) {
+
+	for (let i = 0; i < override.length; i ++) {
+		["x", "y", "angle"].forEach(k => {
+			if (override[i][k][0] === "w") {
+				let center = null
+				let wSize = null
+				let minVal = null
+				let maxVal = null
+				switch (k) {
+					case "angle":
+						center = angle
+						wSize = opt.angleWindowSize
+						minVal = Number.NEGATIVE_INFINITY
+						maxVal = Number.POSITIVE_INFINITY
+						break;
+					case "x":
+						center = initX[i]
+						wSize = opt.posWindowSize
+						minVal = 0
+						maxVal = width
+						break;
+					case "y":
+						center = getY(initX[i], slope, initX[0])
+						wSize = opt.posWindowSize
+						minVal = 0
+						maxVal = height
+						break;
+				}
+				override[i][k] = ["r", truncate(center - wSize/2, minVal, maxVal), truncate(center + wSize/2, minVal, maxVal)]
+			}
+		})
+	}
+
+}
+
 function RandomHLine2({ width, height, options, override }) {
 
 	// Override is an array of objects.
@@ -191,25 +250,12 @@ function RandomHLine2({ width, height, options, override }) {
 	if (!override)
 		override = Array(opt.numControls).fill("auto")
 	preProcessOverride(width, height, opt, override)
+	checkOverride(width, opt, override)
+	convertEndPoints(opt, override)
 	console.log("post-processed override", override)
 
 	// figure out x points first
 	let initX = [...Array(opt.numControls).keys()].map(x => x / (opt.numControls - 1) * width)
-			
-	// some checks
-	if (override.length != opt.numControls) {
-		console.warn("Number of control points and the length of the override array are not equal."
-			+ " " + "The numControls option will be disregarded.")
-		opt.numControls = override.length
-		initX = [...Array(opt.numControls).keys()].map(x => x / (opt.numControls - 1) * width)
-	}
-	// the endpoints must be ["r", x, x]
-	if (!compareArrays(override[0]["x"], ["r", 0, 0])) {
-		console.error("The first element of override array must have x property of [0, 0].")
-	}
-	if (!compareArrays(override[opt.numControls - 1]["x"], ["r", width, width])) {
-		console.error("The first element of override array must have x property of [0, 0].")
-	}
 
 	let lastFixed = 0
 	for (let i = 1; i < opt.numControls; i ++) {
@@ -227,30 +273,85 @@ function RandomHLine2({ width, height, options, override }) {
 
 	console.log("initX", initX)
 
+	// init data array
+	let data = Array(opt.numControls)
+	for (let i = 0; i < opt.numControls; i ++) {
+		data[i] = {initX: initX[i]}
+	}
 
+	// initial slope... first figure out final y's of endpoints
+	const finalLeft = rnd(override[0].y[1], override[0].y[2])
+	const finalRight = rnd(override[opt.numControls - 1].y[1], override[opt.numControls - 1].y[2])
+	const slope = (finalRight - finalLeft) / width
+	const angle = Math.atan(slope)
+	override[0].y = ["r", finalLeft, finalLeft]
+	override[opt.numControls - 1].y = ["r", finalRight, finalRight]
 
+	convertInteriorPoints(width, height, opt, override, initX, slope, angle)
 
-	// now deal with initial slope
-	// if (override[0].y == undefined)
-	// 	override[0].y = [opt.leftPos - opt.posWindowSize/2, opt.leftPos + opt.posWindowSize/2]
-	// if (override[opt.numControls - 1].y == undefined)
-	// 	override[opt.numControls - 1].y = [opt.rightPos - opt.posWindowSize/2, opt.leftPos + opt.posWindowSize/2]
-	// const finalLeft = rnd(override[0].y[0], override[0].y[1])
-	// const finalRight = rnd(override[opt.numControls - 1].y[0], override[opt.numControls - 1].y[1])
-	// const slope = (finalRight - finalLeft) / width
-	// const angle = Math.atan(slope)
+	for (let i = 0; i < opt.numControls; i ++) {
+		["x", "y", "angle"].forEach(k => {
+			data[i][k] = rnd(override[i][k][1], override[i][k][2])
+		})
 
+	}
 
+	console.log("data", data)
 
-	// for (let i = 1; i < opt.numControls - 1; i ++) {
-	// 	if (override[i].x == undefined)
-	// 		override[i].x = rnd(initX[i] - opt.posWindowSize/2, initX[i] + opt.posWindowSize/2)
-	// 	if (override[i].y == undefined)
-	// 		override[i].y = rnd(getY(initX[i], slope, finalLeft) - opt.posWindowSize/2, getY(initX[i], slope, finalLeft) + opt.posWindowSize/2)
-	// 	if (override[i].angle == undefined)
-	// 		override[i].angle = []
-	// }
+	const distance = getMinDistance(cPoints, 2 * Math.max(width, height))
 
+	let data = Array(opt.sections + 1)
+	for (let i = 0; i < cPoints.length; i ++) {
+		data[i] = {c: cPoints[i]}
+		data[i].angle = jitter(angle, opt.angleRoom)
+		data[i].distance = distance
+		data[i].ctrl = movePoint(cPoints[i][0], cPoints[i][1], data[i].angle, (i === 0 ? 1 : -1) * distance / 2, {yMin: 0, yMax: height})
+		data[i].ctrl_alt = movePoint(cPoints[i][0], cPoints[i][1], data[i].angle, (i === 0 ? -1 : 1) * distance / 2)
+	}
+	console.log("data", data)
+
+	let midCurve = "C " + ptToString(data[0].ctrl) + ", " + ptToString(data[1].ctrl) + ", " + ptToString(data[1].c) + " "
+	for (let i = 2; i < cPoints.length; i ++) {
+		midCurve += "S " + ptToString(data[i].ctrl) + ", " + ptToString(data[i].c) + " "
+	}
+
+	RandomHLine2({width: 600, height: 300, options: {numControls: 4}, override: ["auto", "auto", {x: ["r", 100, 100]}, "auto"]})
+	// RandomHLine2({width: 600, height: 300, options: {numControls: 4}})
+	
+  return(
+		<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
+			<path d={"M 0 0 " + "V " + data[0].c[1].toFixed(2) + " " + midCurve + "V 0 Z"} fill={opt.fillTop} />
+			<path d={"M 0 " + height + " " + "V " + data[0].c[1].toFixed(2) + " " + midCurve + "V " + height + " Z"} fill={opt.fillBottom} />
+			<path d={"M 0 " + data[0].c[1].toFixed(2) + " " + midCurve} stroke={opt.strokeMid} fill="transparent" />
+			{opt.showHandles &&
+				// control points
+				data.map((x, i) => {
+					return(
+						<React.Fragment key={"group " + i}>
+							{(i === 0 || i === opt.sections) &&
+								<line x1={x.ctrl[0]} y1={x.ctrl[1]} x2={x.c[0]} y2={x.c[1]} key={"line " + i} stroke="blue" />
+							}
+							{i > 0 && i < opt.sections &&
+								<line x1={x.ctrl[0]} y1={x.ctrl[1]} x2={x.ctrl_alt[0]} y2={x.ctrl_alt[1]} key={"line " + i} stroke="blue" />
+							}
+							<circle cx={x.c[0]} cy={x.c[1]} r={4} key={"center " + i} />
+							<circle cx={x.ctrl[0]} cy={x.ctrl[1]} r={2} key={"control " + i} />
+							{i > 0 && i < opt.sections &&
+								<circle cx={x.ctrl_alt[0]} cy={x.ctrl_alt[1]} r={2} key={"control_alt " + i} />
+							}
+						</React.Fragment>
+					)
+				})
+			}
+  	</svg>
+  )
 
 
 }
+
+
+
+
+
+
+
