@@ -8,12 +8,12 @@ Create a random, wavy `svg` image. A few different shapes are planned:
 
 This package was inspired by [blobmaker.app](https://www.blobmaker.app/).
 
-[![NPM](https://img.shields.io/npm/v/react-random-shape.svg)](https://www.npmjs.com/package/react-random-shape) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-random-shapes.svg)](https://www.npmjs.com/package/react-random-shape) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save react-random-shape
+npm install --save react-random-shapes
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ npm install --save react-random-shape
 ```jsx
 import React from 'react'
 
-import RandomHLine from 'react-random-shape'
+import RandomHLine from 'react-random-shapes'
 
 export default function Example() {
   return <RandomHLine width="600" height="300" />
@@ -30,29 +30,60 @@ export default function Example() {
 
 For all shapes, `width` and `height` attributes are required. Additionally, various options could be specified.
 
-### List of Shapes
+### `RandomHLine`
 
-#### `RandomHLine`
+Generates a horizontal line (going roughly from left to right).
 
-Generates a horizontal line (going roughly from left to right). Options available are:
+#### Options
+
+Options available are:
 
 * `leftPos` (default `0.5*height`) Vertical position of the left handle.
-* `leftRoom` (default `0.3*height`) Size of the [1-D] window in which `leftPos` could wiggle around.
 * `rightPos` (default `0.5*height`) Similar to `leftPos`.
-* `rightRoom` (default `0.3*height`) Similar to `leftRoom`.
-* `sections` (default `1`) Number of section the curve will be divided into.
-* `midRoom` (default `0.2*height`) Size of the [2-D] window in which the middle control points could wiggle around.
-* `angleRoom` (default `Math.PI / 3`) Size of the window in which the angle of the control point, as measured from the control point, could wiggle around.
-* `fillTop` (default `"transparent"`) Fill of the top part.
-* `fillBottom` (default `"transparent"`) Fill of the bottom part.
-* `strokeMid` (default `"black"`) Stroke style of the dividing line.
+* `posWindowSize` (default `0.2*height`) Size of the square in which the control points could wiggle around.
+* `angleWindowSize` (default `Math.PI / 3`) Size of the window in which the angle of the control line (measured from the control point) could wiggle around.
+* `numControls` (default `2`) Number of control points the line should have.
+* `styleTop` (default `{fill: "transparent"}`) Style of the top part.
+* `styleBottom` (default `{fill: "transparent"}`) Style of the bottom part.
+* `styleMid` (default `{fill: "transparent", stroke: "black"}`) Style of the mid-line part.
 * `showHandles` (default `false`) Show the handles and control points (for debug purpose).
 
-#### `RandomVLine`
+#### Overriding
+
+Additionally, you could "override" these points by adding the `override` attribute.
+This should be an array of the same length as the number of control points (the length of the `override` array will override if this is not true.)
+Each entry represents the override for each control point.
+If the entry is `null`, `undefined`, or `"auto"`, there will be no overriding.
+To override, the entry must be an object with 3 possible keys: `x`, `y`, and `angle`.
+Each key's value will specify the override mode for that control point.
+There are 4 possible modes:
+
+* `null`, `undefined`, or `"auto"`
+* `["p", value]`: specify the exact value of that key.
+* `["w", value]`: specify the size of the window while having the center position automatically adjusted.
+* `["r", l_bound, u_bound]`: specify the lower and upper boundries for that key.
+
+#### Examples
+
+```
+override = [
+		{
+			angle: ["r", 0, Math.PI / 4]
+		},
+		"auto",
+		{
+			x: ["p", 300],
+			y: ["r", 10, 15] 
+		},
+		"auto"
+	]
+```
+
+### `RandomVLine`
 
 [Not yet available.]
 
-#### `RandomBlob`
+### `RandomBlob`
 
 [Not yet available.]
 

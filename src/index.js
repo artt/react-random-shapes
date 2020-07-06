@@ -10,8 +10,9 @@ function truncate(pos, posMin, posMax) {
 	return Math.min(Math.max(pos, posMin), posMax)
 }
 
-function movePoint(x, y, rho, r, {xMin, xMax, yMin, yMax}={}) {
-	return [truncate(x + r * Math.cos(rho), xMin, xMax), truncate(y + r * Math.sin(rho), yMin, yMax)]
+function movePoint(x, y, rho, r, { xMin, xMax, yMin, yMax }={}) {
+	return [truncate(x + r * Math.cos(rho), xMin, xMax),
+					truncate(y + r * Math.sin(rho), yMin, yMax)]
 }
 
 function ptToString(xy) {
@@ -19,9 +20,9 @@ function ptToString(xy) {
 }
 
 function compareArrays(a, b) {
-	if (a.length != b.length) return false;
+	if (a.length !== b.length) return false;
 	for (let i = 0; i < a.length; i ++) {
-		if (a[i] != b[i]) return false;
+		if (a[i] !== b[i]) return false;
 	}
 	return true;
 }
@@ -61,7 +62,7 @@ function preProcessOverride(width, height, opt, override) {
 
 function checkOverride(width, opt, override) {
 	// some checks
-	if (override.length != opt.numControls) {
+	if (override.length !== opt.numControls) {
 		console.warn("Number of control points and the length of the override array are not equal."
 			+ " " + "The numControls option will be disregarded.")
 		opt.numControls = override.length
@@ -222,7 +223,7 @@ export function RandomHLine({ width, height, options, override }) {
 
 	// console.log("new", midCurve)
 	
-  return(
+	return(
 		<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
 			<path d={"M 0 0 " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} />
 			<path d={"M 0 " + height + " " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V " + height + " Z"} style={opt.styleBottom} />
@@ -247,15 +248,7 @@ export function RandomHLine({ width, height, options, override }) {
 					)
 				})
 			}
-  	</svg>
-  )
-
+		</svg>
+	)
 
 }
-
-
-
-
-
-
-
