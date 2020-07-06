@@ -160,6 +160,9 @@ export function RandomHLine({ width, height, options, override, className }) {
 		...options
 	}
 
+	if (opt.debug)
+		console.log("inital opt", JSON.parse(JSON.stringify(opt)))
+
 	// preprocess override
 	if (!override)
 		override = Array(opt.numControls).fill("auto")
@@ -173,6 +176,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 	let initX = [...Array(opt.numControls).keys()].map(x => x / (opt.numControls - 1) * width)
 
 	let lastFixed = 0
+	
 	for (let i = 1; i < opt.numControls; i ++) {
 		if (override[i].x[0] === "r") {
 			initX[i] = (override[i].x[1] + override[i].x[2]) / 2
