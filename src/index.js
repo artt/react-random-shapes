@@ -132,7 +132,7 @@ function getMinDistance(a) {
 }
 
 
-export function RandomHLine({ width, height, options, override }) {
+export function RandomHLine({ width, height, options, override, className }) {
 
 	// Override is an array of objects.
 	// If the entry at position i is null, undefined, or "auto", then default is applied.
@@ -153,6 +153,9 @@ export function RandomHLine({ width, height, options, override }) {
 		styleTop: {fill: "transparent"},
 		styleBottom: {fill: "transparent"},
 		styleMid: {fill: "transparent", stroke: "black"},
+		classNameTop: "",
+		classNameBottom: "",
+		classNameMid: "",
 		showHandles: false,
 		...options
 	}
@@ -211,7 +214,7 @@ export function RandomHLine({ width, height, options, override }) {
 
 	for (let i = 0; i < opt.numControls; i ++) {
 		data[i].distance = (i === 0 ? 1 : -1) * distance
-		data[i].ctrl = movePoint(data[i].x, data[i].y, data[i].angle, data[i].distance/2, {yMin: 0, yMax: height})
+		data[i].ctrl = movePoint(data[i].x, data[i].y, data[i].angle, data[i].distance/2)
 		data[i].ctrl_alt = movePoint(data[i].x, data[i].y, data[i].angle, -1 * data[i].distance/2)
 	}
 	// console.log("data", data)
@@ -224,31 +227,33 @@ export function RandomHLine({ width, height, options, override }) {
 	// console.log("new", midCurve)
 	
 	return(
-		<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
-			<path d={"M 0 0 " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} />
-			<path d={"M 0 " + height + " " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V " + height + " Z"} style={opt.styleBottom} />
-			<path d={"M 0 " + data[0].y.toFixed(2) + " " + midCurve} style={opt.styleMid} />
-			{opt.showHandles &&
-				// control points
-				data.map((x, i) => {
-					return(
-						<React.Fragment key={"group " + i}>
-							{(i === 0 || i === opt.numControls) &&
-								<line x1={x.ctrl[0]} y1={x.ctrl[1]} x2={x.x} y2={x.y} key={"line " + i} stroke="blue" />
-							}
-							{i > 0 && i < opt.numControls &&
-								<line x1={x.ctrl[0]} y1={x.ctrl[1]} x2={x.ctrl_alt[0]} y2={x.ctrl_alt[1]} key={"line " + i} stroke="blue" />
-							}
-							<circle cx={x.x} cy={x.y} r={4} key={"center " + i} />
-							<circle cx={x.ctrl[0]} cy={x.ctrl[1]} r={2} key={"control " + i} />
-							{i > 0 && i < opt.numControls &&
-								<circle cx={x.ctrl_alt[0]} cy={x.ctrl_alt[1]} r={2} key={"control_alt " + i} />
-							}
-						</React.Fragment>
-					)
-				})
-			}
-		</svg>
+		<div className={className}>
+			<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
+				<path d={"M 0 0 " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} className={opt.classNameTop} />
+				<path d={"M 0 " + height + " " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V " + height + " Z"} style={opt.styleBottom} className={opt.classNameBottom} />
+				<path d={"M 0 " + data[0].y.toFixed(2) + " " + midCurve} style={opt.styleMid} className={opt.classNameMid} />
+				{opt.showHandles &&
+					// control points
+					data.map((x, i) => {
+						return(
+							<React.Fragment key={"group " + i}>
+								{(i === 0 || i === opt.numControls) &&
+									<line x1={x.ctrl[0]} y1={x.ctrl[1]} x2={x.x} y2={x.y} key={"line " + i} stroke="blue" />
+								}
+								{i > 0 && i < opt.numControls &&
+									<line x1={x.ctrl[0]} y1={x.ctrl[1]} x2={x.ctrl_alt[0]} y2={x.ctrl_alt[1]} key={"line " + i} stroke="blue" />
+								}
+								<circle cx={x.x} cy={x.y} r={4} key={"center " + i} />
+								<circle cx={x.ctrl[0]} cy={x.ctrl[1]} r={2} key={"control " + i} />
+								{i > 0 && i < opt.numControls &&
+									<circle cx={x.ctrl_alt[0]} cy={x.ctrl_alt[1]} r={2} key={"control_alt " + i} />
+								}
+							</React.Fragment>
+						)
+					})
+				}
+			</svg>
+		</div>
 	)
 
 }

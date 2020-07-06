@@ -46,6 +46,9 @@ Options available are:
 * `styleTop` (default `{fill: "transparent"}`) Style of the top part.
 * `styleBottom` (default `{fill: "transparent"}`) Style of the bottom part.
 * `styleMid` (default `{fill: "transparent", stroke: "black"}`) Style of the mid-line part.
+* `classNameTop` (default `""`) Class name for the top part.
+* `classNameBottom` (default `""`) Class name for the bottom part.
+* `classNameMid` (default `""`) Class name for the mid-line part.
 * `showHandles` (default `false`) Show the handles and control points (for debug purpose).
 
 #### Overriding
@@ -65,14 +68,19 @@ There are 4 possible modes:
 
 #### Examples
 
-```
+The following code will create a `RandomHLine` with 4 control points.
+The first point (leftmost) will have the control line that's angled between `0` and `45` degrees.
+The second point will be automatically placed in between the
+
+```js
 override = [
   {
     angle: ["r", 0, Math.PI / 4]
   },
   "auto",
+  "auto",
   {
-    x: ["p", 300],
+    x: ["p", 500],
     y: ["r", 10, 15] 
   },
   "auto"
