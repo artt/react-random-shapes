@@ -173,6 +173,11 @@ export function RandomHLine({ width, height, options, override, className }) {
 		console.log("post-processed override", JSON.parse(JSON.stringify(override)))
 
 	// figure out x points first
+	if (opt.debug) {
+		console.log("0 -", opt.numControls)
+		console.log("1 -", [...Array(opt.numControls).keys()])
+		console.log("3 -", [...Array(opt.numControls).keys()].map(x => x / (opt.numControls - 1) * width))
+	}
 	let initX = [...Array(opt.numControls).keys()].map(x => x / (opt.numControls - 1) * width)
 	if (opt.debug)
 		console.log("initX", JSON.parse(JSON.stringify(initX)))
