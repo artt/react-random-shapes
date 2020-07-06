@@ -16,7 +16,7 @@ const override = [
 ]
 
 const App = () => {
-  return <RandomHLine width={600} height={300} override={override} options={{showHandles: true}} />
+  return <RandomHLine width={600} height={300} options={{numControls: 4, debug: true}} />
 }
 
 export default App

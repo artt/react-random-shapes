@@ -156,7 +156,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 		classNameTop: "",
 		classNameBottom: "",
 		classNameMid: "",
-		showHandles: false,
+		debug: false,
 		...options
 	}
 
@@ -166,7 +166,8 @@ export function RandomHLine({ width, height, options, override, className }) {
 	preProcessOverride(width, height, opt, override)
 	checkOverride(width, opt, override)
 	convertEndPoints(opt, override)
-	// console.log("post-processed override", override)
+	if (opt.debug)
+		console.log("post-processed override", JSON.parse(JSON.stringify(override)))
 
 	// figure out x points first
 	let initX = [...Array(opt.numControls).keys()].map(x => x / (opt.numControls - 1) * width)
@@ -185,7 +186,8 @@ export function RandomHLine({ width, height, options, override, className }) {
 		}
 	}
 
-	// console.log("initX", initX)
+	if (opt.debug)
+		console.log("initX", initX)
 
 	// init data array
 	let data = Array(opt.numControls)
@@ -208,23 +210,23 @@ export function RandomHLine({ width, height, options, override, className }) {
 		})
 	}
 
-	// console.log("data", data)
+	if (opt.debug) 
+		console.log("data", JSON.parse(JSON.stringify(data)))
 	const distance = getMinDistance(data)
-	// console.log("distance", distance)
 
 	for (let i = 0; i < opt.numControls; i ++) {
 		data[i].distance = (i === 0 ? 1 : -1) * distance
 		data[i].ctrl = movePoint(data[i].x, data[i].y, data[i].angle, data[i].distance/2)
 		data[i].ctrl_alt = movePoint(data[i].x, data[i].y, data[i].angle, -1 * data[i].distance/2)
 	}
-	// console.log("data", data)
+
+	if (opt.debug)
+		console.log("data with controls", data)
 
 	let midCurve = "C " + ptToString(data[0].ctrl) + ", " + ptToString(data[1].ctrl) + ", " + data[1].x + " " + data[1].y + " "
 	for (let i = 2; i < opt.numControls; i ++) {
 		midCurve += "S " + ptToString(data[i].ctrl) + ", " + data[i].x + " " + data[i].y + " "
 	}
-
-	// console.log("new", midCurve)
 	
 	return(
 		<div className={className}>
@@ -232,7 +234,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 				<path d={"M 0 0 " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} className={opt.classNameTop} />
 				<path d={"M 0 " + height + " " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V " + height + " Z"} style={opt.styleBottom} className={opt.classNameBottom} />
 				<path d={"M 0 " + data[0].y.toFixed(2) + " " + midCurve} style={opt.styleMid} className={opt.classNameMid} />
-				{opt.showHandles &&
+				{opt.debug &&
 					// control points
 					data.map((x, i) => {
 						return(
