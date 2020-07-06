@@ -67,16 +67,16 @@ There are 4 possible modes:
 
 ```
 override = [
-		{
-			angle: ["r", 0, Math.PI / 4]
-		},
-		"auto",
-		{
-			x: ["p", 300],
-			y: ["r", 10, 15] 
-		},
-		"auto"
-	]
+  {
+    angle: ["r", 0, Math.PI / 4]
+  },
+  "auto",
+  {
+    x: ["p", 300],
+    y: ["r", 10, 15] 
+  },
+  "auto"
+]
 ```
 
 ### `RandomVLine`
