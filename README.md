@@ -24,7 +24,7 @@ import React from 'react'
 import RandomHLine from 'react-random-shapes'
 
 export default function Example() {
-  return <RandomHLine width="600" height="300" />
+  return <RandomHLine width={600} height={300} />
 }
 ```
 
@@ -90,6 +90,11 @@ override = [
 ### `RandomBlob`
 
 [Not yet available.]
+
+## Todo's
+
+* Implement `RandomVLine` and `RandomBlob`.
+* Accept attribute `width` and `height` as strings.
 
 ## License
 
