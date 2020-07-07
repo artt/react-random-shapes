@@ -95,6 +95,7 @@ override = [
 
 * Implement `RandomVLine` and `RandomBlob`.
 * Accept attribute `width` and `height` as strings.
+* Calculate slope based on two adjacent fixed points.
 
 ## License
 
