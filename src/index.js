@@ -152,8 +152,8 @@ export function RandomHLine({ width, height, options, override, className }) {
 		posWindowSize: 0.2*height,
 		angleWindowSize: Math.PI / 3,
 		numControls: 2,
-		styleTop: {fill: "transparent"},
-		styleBottom: {fill: "transparent"},
+		styleTop: "none",
+		styleBottom: "none",
 		styleMid: {fill: "transparent", stroke: "black"},
 		classNameTop: "",
 		classNameBottom: "",
@@ -249,32 +249,38 @@ export function RandomHLine({ width, height, options, override, className }) {
 	if (opt.debug)
 		console.log("data with controls", data)
 
-	let midCurve = "C " + ptToString(data[0].ctrl) + ", " + ptToString(data[1].ctrl) + ", " + data[1].x + " " + data[1].y + " "
+	let midCurve = "C " + ptToString(data[0].ctrl) + ", " + ptToString(data[1].ctrl) + ", " + data[1].x.toFixed(2) + " " + data[1].y.toFixed(2) + " "
 	for (let i = 2; i < opt.numControls; i ++) {
-		midCurve += "S " + ptToString(data[i].ctrl) + ", " + data[i].x + " " + data[i].y + " "
+		midCurve += "S " + ptToString(data[i].ctrl) + ", " + data[i].x.toFixed(2) + " " + data[i].y.toFixed(2) + " "
 	}
 	
 	return(
 		<div className={className}>
 			<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
-				<path d={"M 0 0 " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} className={opt.classNameTop} />
-				<path d={"M 0 " + height + " " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V " + height + " Z"} style={opt.styleBottom} className={opt.classNameBottom} />
-				<path d={"M 0 " + data[0].y.toFixed(2) + " " + midCurve} style={opt.styleMid} className={opt.classNameMid} />
+				{opt.styleTop !== "none" &&
+					<path d={"M 0 0 " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} className={opt.classNameTop} />
+				}
+				{opt.styleBottom !== "none" &&
+					<path d={"M 0 " + height + " " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V " + height + " Z"} style={opt.styleBottom} className={opt.classNameBottom} />
+				}
+				{opt.styleMid !== "none" &&
+					<path d={"M 0 " + data[0].y.toFixed(2) + " " + midCurve} style={opt.styleMid} className={opt.classNameMid} />
+				}
 				{opt.debug &&
 					// control points
 					data.map((x, i) => {
 						return(
 							<React.Fragment key={"group " + i}>
 								{(i === 0 || i === opt.numControls) &&
-									<line x1={x.ctrl[0]} y1={x.ctrl[1]} x2={x.x} y2={x.y} key={"line " + i} stroke="blue" />
+									<line x1={x.ctrl[0].toFixed(2)} y1={x.ctrl[1].toFixed(2)} x2={x.x.toFixed(2)} y2={x.y.toFixed(2)} key={"line " + i} stroke="blue" />
 								}
 								{i > 0 && i < opt.numControls &&
-									<line x1={x.ctrl[0]} y1={x.ctrl[1]} x2={x.ctrl_alt[0]} y2={x.ctrl_alt[1]} key={"line " + i} stroke="blue" />
+									<line x1={x.ctrl[0].toFixed(2)} y1={x.ctrl[1].toFixed(2)} x2={x.ctrl_alt[0].toFixed(2)} y2={x.ctrl_alt[1].toFixed(2)} key={"line " + i} stroke="blue" />
 								}
-								<circle cx={x.x} cy={x.y} r={4} key={"center " + i} />
-								<circle cx={x.ctrl[0]} cy={x.ctrl[1]} r={2} key={"control " + i} />
+								<circle cx={x.x.toFixed(2)} cy={x.y.toFixed(2)} r={4} key={"center " + i} />
+								<circle cx={x.ctrl[0].toFixed(2)} cy={x.ctrl[1].toFixed(2)} r={2} key={"control " + i} />
 								{i > 0 && i < opt.numControls &&
-									<circle cx={x.ctrl_alt[0]} cy={x.ctrl_alt[1]} r={2} key={"control_alt " + i} />
+									<circle cx={x.ctrl_alt[0].toFixed(2)} cy={x.ctrl_alt[1].toFixed(2)} r={2} key={"control_alt " + i} />
 								}
 							</React.Fragment>
 						)
