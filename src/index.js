@@ -256,7 +256,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 	
 	return(
 		<div className={className}>
-			<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
+			<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height} version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
 				{opt.styleTop !== "none" &&
 					<path d={"M 0 0 " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} className={opt.classNameTop} />
 				}
