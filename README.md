@@ -43,8 +43,8 @@ Options available are:
 * `posWindowSize` (default `0.2*height`) Size of the square in which the control points could wiggle around.
 * `angleWindowSize` (default `Math.PI / 3`) Size of the window in which the angle of the control line (measured from the control point) could wiggle around.
 * `numControls` (default `2`) Number of control points the line should have.
-* `styleTop` (default `{fill: "transparent"}`) Style of the top part.
-* `styleBottom` (default `{fill: "transparent"}`) Style of the bottom part.
+* `styleTop` (default `"none"`) Style of the top part.
+* `styleBottom` (default `"none"`) Style of the bottom part.
 * `styleMid` (default `{fill: "transparent", stroke: "black"}`) Style of the mid-line part.
 * `classNameTop` (default `""`) Class name for the top part.
 * `classNameBottom` (default `""`) Class name for the bottom part.
@@ -53,7 +53,7 @@ Options available are:
 
 #### Overriding
 
-Additionally, you could "override" these points by adding the `override` attribute.
+For more flexibility, you could "override" these points by adding the `override` attribute.
 This should be an array of the same length as the number of control points (the length of the `override` array will override if this is not true.)
 Each entry represents the override for each control point.
 If the entry is `null`, `undefined`, or `"auto"`, there will be no overriding.
@@ -95,7 +95,7 @@ override = [
 
 * Implement `RandomVLine` and `RandomBlob`.
 * Accept attribute `width` and `height` as strings.
-* Calculate slope based on two adjacent fixed points.
+* Calculate slope based on two closest fixed points.
 
 ## License
 
