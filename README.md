@@ -1,5 +1,7 @@
 # react-random-shapes
 
+![Wave](./wave.svg)
+
 Create a random, wavy `svg` image. A few different shapes are planned:
 
 * [`RandomHLine`](#randomhline)
