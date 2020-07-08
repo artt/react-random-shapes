@@ -1,14 +1,12 @@
 <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" width="800" height="300">
-<path d="M 0 146.70 C 398.27 186.21, 427.72 320.31, 800.00 173.39 " class="" style="fill: transparent; stroke: rgb(204, 0, 0);"></path>
-<path d="M 0 158.20 C 357.25 338.14, 404.71 102.65, 800.00 163.93 " class="" style="fill: transparent; stroke: rgb(204, 102, 0);"></path>
-<path d="M 0 144.94 C 372.70 290.21, 400.77 115.09, 800.00 140.09 " class="" style="fill: transparent; stroke: rgb(204, 204, 0);"></path>
-<path d="M 0 130.82 C 399.99 134.32, 400.35 117.70, 800.00 134.56 " class="" style="fill: transparent; stroke: rgb(102, 204, 0);"></path>
-<path d="M 0 177.52 C 356.54 -4.89, 420.68 9.26, 800.00 137.75 " class="" style="fill: transparent; stroke: rgb(0, 204, 0);"></path>
-<path d="M 0 175.82 C 392.94 250.84, 425.17 24.89, 800.00 164.64 " class="" style="fill: transparent; stroke: rgb(0, 204, 102);"></path>
-<path d="M 0 157.58 C 349.77 351.70, 400.60 171.77, 800.00 149.43 " class="" style="fill: transparent; stroke: rgb(0, 204, 204);"></path>
-<path d="M 0 154.09 C 398.35 191.16, 432.09 11.74, 800.00 168.89 " class="" style="fill: transparent; stroke: rgb(0, 102, 204);"></path>
-<path d="M 0 168.92 C 362.43 338.24, 447.92 -10.37, 800.00 179.55 " class="" style="fill: transparent; stroke: rgb(0, 0, 204);"></path>
-<path d="M 0 157.89 C 399.81 141.66, 430.15 289.58, 800.00 136.86 " class="" style="fill: transparent; stroke: rgb(102, 0, 204);"></path>
-<path d="M 0 149.38 C 398.35 185.70, 400.44 132.88, 800.00 151.66 " class="" style="fill: transparent; stroke: rgb(204, 0, 204);"></path>
-<path d="M 0 145.12 C 397.77 189.38, 404.13 230.90, 800.00 172.00 " class="" style="fill: transparent; stroke: rgb(204, 0, 102);"></path>
+<path d="M 0 167.18 C 191.15 202.43, 217.00 169.45, 411.35 166.48 S 608.67 209.51, 800.00 175.27 " class="" style="fill: transparent; stroke: rgb(204, 0, 0); stroke-width: 1.19876;"></path>
+<path d="M 0 154.77 C 180.61 72.03, 200.41 162.26, 396.61 131.12 S 610.14 178.76, 800.00 120.30 " class="" style="fill: transparent; stroke: rgb(204, 102, 0); stroke-width: 1.95812;"></path>
+<path d="M 0 133.58 C 163.91 224.68, 199.41 194.81, 375.02 129.03 S 628.41 57.06, 800.00 132.69 " class="" style="fill: transparent; stroke: rgb(204, 204, 0); stroke-width: 1.74551;"></path>
+<path d="M 0 141.02 C 185.21 81.77, 195.53 171.56, 388.81 150.18 S 612.13 120.08, 800.00 170.27 " class="" style="fill: transparent; stroke: rgb(102, 204, 0); stroke-width: 1.50777;"></path>
+<path d="M 0 173.18 C 181.52 122.25, 242.31 127.11, 425.58 171.37 S 611.48 125.03, 800.00 126.80 " class="" style="fill: transparent; stroke: rgb(0, 204, 0); stroke-width: 0.473146;"></path>
+<path d="M 0 129.13 C 191.52 152.23, 199.46 81.94, 385.81 131.84 S 632.27 55.10, 800.00 150.39 " class="" style="fill: transparent; stroke: rgb(0, 204, 102); stroke-width: 1.27436;"></path>
+<path d="M 0 147.30 C 178.77 77.49, 245.21 248.56, 416.52 162.04 S 624.12 101.68, 800.00 178.48 " class="" style="fill: transparent; stroke: rgb(0, 204, 204); stroke-width: 1.70221;"></path>
+<path d="M 0 121.13 C 188.04 133.52, 261.95 10.26, 425.24 104.33 S 620.01 200.14, 800.00 144.33 " class="" style="fill: transparent; stroke: rgb(0, 102, 204); stroke-width: 1.57293;"></path>
+<path d="M 0 149.77 C 171.48 78.90, 248.20 208.45, 429.17 167.52 S 615.34 171.40, 800.00 153.31 " class="" style="fill: transparent; stroke: rgb(0, 0, 204); stroke-width: 1.78364;"></path>
+<path d="M 0 132.83 C 190.12 149.49, 252.01 17.59, 419.06 109.88 S 634.51 38.90, 800.00 133.96 " class="" style="fill: transparent; stroke: rgb(102, 0, 204); stroke-width: 0.994859;"></path>
 </svg>
