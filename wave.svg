@@ -1,6 +1,4 @@
-<svg version="1.1"
-     baseProfile="full"
-     xmlns="http://www.w3.org/2000/svg" width="800" height="300">
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" width="800" height="300">
 <path d="M 0 146.70 C 398.27 186.21, 427.72 320.31, 800.00 173.39 " class="" style="fill: transparent; stroke: rgb(204, 0, 0);"></path>
 <path d="M 0 158.20 C 357.25 338.14, 404.71 102.65, 800.00 163.93 " class="" style="fill: transparent; stroke: rgb(204, 102, 0);"></path>
 <path d="M 0 144.94 C 372.70 290.21, 400.77 115.09, 800.00 140.09 " class="" style="fill: transparent; stroke: rgb(204, 204, 0);"></path>
