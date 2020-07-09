@@ -43,7 +43,7 @@ Options available are:
 * `leftPos` (default `0.5*height`) Vertical position of the left handle.
 * `rightPos` (default `0.5*height`) Similar to `leftPos`.
 * `posWindowSize` (default `0.2*height`) Size of the square in which the control points could wiggle around.
-* `angleWindowSize` (default `Math.PI / 3`) Size of the window in which the angle of the control line (measured from the control point) could wiggle around.
+* `angleWindowSize` (default `Math.PI/3`) Size of the window in which the angle of the control line (measured from the control point) could wiggle around.
 * `numControls` (default `2`) Number of control points the line should have.
 * `styleTop` (default `"none"`) Style of the top part.
 * `styleBottom` (default `"none"`) Style of the bottom part.

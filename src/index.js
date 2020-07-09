@@ -163,7 +163,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 		leftPos: 0.5*height,
 		rightPos: 0.5*height,
 		posWindowSize: 0.2*height,
-		angleWindowSize: Math.PI / 3,
+		angleWindowSize: Math.PI/3,
 		numControls: 2,
 		styleTop: "none",
 		styleBottom: "none",
@@ -309,13 +309,16 @@ export function RandomBlob({ size, options, override, className }) {
 	// 	- ["r", l_bound, u_bound]: specify the minimum and maximum values
 	
 	const opt = {
-		numControls: 5,
+		numControls: 3,
 		posWindowSize: 0.1*size,
-		debug: true,
+		angleWindowSize: Math.PI/3,
+		handleWindowSize: 0.5,
+		debug: false,
 		...options
 	}
 
-	const distance = size / opt.numControls / 2
+	const initRadius = size/2 - 2*opt.posWindowSize
+	const distance = 2*Math.PI*initRadius / opt.numControls / 2.5
 
 	const tmp = Math.random() * 2 * Math.PI;
 	// console.log(tmp + 2)
@@ -326,11 +329,12 @@ export function RandomBlob({ size, options, override, className }) {
 	let data = Array(opt.numControls)
 		for (let i = 0; i < opt.numControls; i ++) {
 		data[i] = {point: movePoint(
-												movePoint(center, initAngle[i], size/2 - 2*opt.posWindowSize),
+												movePoint(center, initAngle[i], initRadius),
 												Math.random() * Math.PI*2,
 												Math.random() * opt.posWindowSize)}
-		data[i].ctrl = movePoint(data[i].point, initAngle[i] + Math.PI/2, -1*distance)
-		data[i].ctrl_alt = movePoint(data[i].point, initAngle[i] + Math.PI/2, distance)
+		data[i].angle = rnd(initAngle[i] + Math.PI/2 - opt.angleWindowSize/2, initAngle[i] + Math.PI/2 + opt.angleWindowSize/2)
+		data[i].ctrl = movePoint(data[i].point, data[i].angle, -1*rnd(distance*(1-opt.handleWindowSize), distance*(1+opt.handleWindowSize)))
+		data[i].ctrl_alt = movePoint(data[i].point, data[i].angle, rnd(distance*(1-opt.handleWindowSize), distance*(1+opt.handleWindowSize)))
 	}
 
 	let path = "M" + data[0].point + " "
