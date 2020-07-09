@@ -309,13 +309,13 @@ export function RandomBlob({ size, options, override, className }) {
 	// 	- ["r", l_bound, u_bound]: specify the minimum and maximum values
 	
 	const opt = {
-		numControls: 3,
+		numControls: 5,
 		posWindowSize: 0.1*size,
-		debug: false,
+		debug: true,
 		...options
 	}
 
-	const distance = size / opt.numControls
+	const distance = size / opt.numControls / 2
 
 	const tmp = Math.random() * 2 * Math.PI;
 	// console.log(tmp + 2)
@@ -329,30 +329,35 @@ export function RandomBlob({ size, options, override, className }) {
 												movePoint(center, initAngle[i], size/2 - 2*opt.posWindowSize),
 												Math.random() * Math.PI*2,
 												Math.random() * opt.posWindowSize)}
+		data[i].ctrl = movePoint(data[i].point, initAngle[i] + Math.PI/2, -1*distance)
+		data[i].ctrl_alt = movePoint(data[i].point, initAngle[i] + Math.PI/2, distance)
 	}
 
-
-	console.log("=================", data)
-
-	// console.log(points)
-	// console.log(initAngle[0])
-	// console.log(movePoint(points[0], initAngle[0] + Math.PI/2, distance))
-
-	const points = initAngle.map(rho => movePoint(
-																				movePoint(center, rho, size/2 - 2*opt.posWindowSize),
-																				Math.random() * Math.PI*2,
-																				Math.random() * opt.posWindowSize))
-	let path = "M " + points[0] + " "
-		+ "C " + movePoint(points[0], initAngle[0] + Math.PI/2, distance) + ", " + movePoint(points[1], initAngle[1] + Math.PI/2, -1*distance) + ", " + points[1].x + " " + points[1].y + " "
-		+ "S " + movePoint(points[2], initAngle[2] + Math.PI/2, -1*distance) + ", " + points[2].x + " " + points[2].y + " "
-		+ "S " + movePoint(points[0], initAngle[0] + Math.PI/2, -1*distance) + ", " + points[0].x + " " + points[0].y + " "
-	console.log(path)
+	let path = "M" + data[0].point + " "
+		+ "C " + data[0].ctrl_alt + ", " + data[1].ctrl + ", " + data[1].point + " "
+	for (let i = 2; i < opt.numControls; i ++) {
+		path += "S " + data[i].ctrl + ", " + data[i].point + " "
+	}
+	path += "S " + data[0].ctrl + ", " + data[0].point
 
 
 	return(  
 		<div className={className}>
 			<svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
 				<path d={path} fill="rgba(255, 0, 0, 0.4)" />
+				{opt.debug &&
+					// control points
+					data.map((x, i) => {
+						return(
+							<React.Fragment key={"group " + i}>
+								<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.ctrl_alt, "?2")} key={"line " + i} stroke="blue" />
+								<circle {...getPointAttribute(x.point, "c?")} r={4} key={"center " + i} />
+								<circle {...getPointAttribute(x.ctrl, "c?")} r={2} key={"control " + i} />
+								<circle {...getPointAttribute(x.ctrl_alt, "c?")} r={2} key={"control_alt " + i} />
+							</React.Fragment>
+						)
+					})
+				}
 			</svg>
 		</div>
 	)
