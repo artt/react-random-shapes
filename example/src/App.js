@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { RandomHLine } from 'react-random-shapes'
+import { RandomHLine, RandomBlob } from 'react-random-shapes'
 
 const override = [
   {
@@ -17,6 +17,7 @@ const override = [
 
 const App = () => {
   return <RandomHLine width={600} height={300} options={{numControls: 4, debug: true}} />
+  // return <RandomBlob size={300} options={{debug: true}} />
 }
 
 export default App

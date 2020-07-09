@@ -2,7 +2,7 @@
 
 ![Wave](./wave.svg)
 
-Create a random, wavy `svg` shapes. A few different shapes are planned:
+Create random, wavy `svg` shapes. A few different shapes are planned:
 
 * [`RandomHLine`](#randomhline)
 * [`RandomVLine`](#randomvline)
@@ -23,7 +23,7 @@ npm install --save react-random-shapes
 ```jsx
 import React from 'react'
 
-import RandomHLine from 'react-random-shapes'
+import { RandomHLine } from 'react-random-shapes'
 
 export default function Example() {
   return <RandomHLine width={600} height={300} />

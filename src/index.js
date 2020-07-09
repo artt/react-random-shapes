@@ -10,9 +10,11 @@ function truncate(pos, posMin, posMax) {
 	return Math.min(Math.max(pos, posMin), posMax)
 }
 
-function movePoint(x, y, rho, r, { xMin, xMax, yMin, yMax }={}) {
-	return [truncate(x + r * Math.cos(rho), xMin, xMax),
-					truncate(y + r * Math.sin(rho), yMin, yMax)]
+function movePoint(xy, rho, r, { xMin, xMax, yMin, yMax }={}) {
+	// console.log("---", xy, rho, r)
+	// console.log("xxx", xy.x + r * Math.cos(rho))
+	return [truncate(xy.x + r * Math.cos(rho), xMin, xMax),
+					truncate(xy.y + r * Math.sin(rho), yMin, yMax)]
 }
 
 function ptToString(xy) {
@@ -242,8 +244,8 @@ export function RandomHLine({ width, height, options, override, className }) {
 
 	for (let i = 0; i < opt.numControls; i ++) {
 		data[i].distance = (i === 0 ? 1 : -1) * distance
-		data[i].ctrl = movePoint(data[i].x, data[i].y, data[i].angle, data[i].distance/2)
-		data[i].ctrl_alt = movePoint(data[i].x, data[i].y, data[i].angle, -1 * data[i].distance/2)
+		data[i].ctrl = movePoint(data[i], data[i].angle, data[i].distance/2)
+		data[i].ctrl_alt = movePoint(data[i], data[i].angle, -1 * data[i].distance/2)
 	}
 
 	if (opt.debug)
@@ -286,6 +288,56 @@ export function RandomHLine({ width, height, options, override, className }) {
 						)
 					})
 				}
+			</svg>
+		</div>
+	)
+
+}
+
+export function RandomBlob({ size, options, override, className }) {
+
+	// Override is an array of objects.
+	// If the entry at position i is null, undefined, or "auto", then default is applied.
+	// Each non-auto entry is an object with 3 possible keys: x, y, and angle.
+	// Each key has a value that's an array (or null). The first element of the array
+	// is the "mode" of overriding. There are 3 possible (non-null) modes:
+	// 	- null, undefined, or "auto"
+	// 	- ["p", value]: specify the exact value
+	// 	- ["w", value]: specify the size of the window
+	// 	- ["r", l_bound, u_bound]: specify the minimum and maximum values
+	
+	const opt = {
+		numControls: 3,
+		debug: false,
+		...options
+	}
+
+	const distance = size / opt.numControls
+
+	const tmp = Math.random() * 2 * Math.PI;
+	// console.log(tmp + 2)
+
+	const initAngle = getRange(opt.numControls).map(x => tmp + x/opt.numControls*2*Math.PI)
+	const center = {x: size/2, y: size/2}
+
+	const points = initAngle.map(rho => movePoint(center, rho, 100))
+
+	console.log("=================")
+
+	console.log(points[0])
+	console.log(initAngle[0])
+	console.log(movePoint(points[0], initAngle[0] + Math.PI/2, distance))
+
+	// let path = "M " + ptToString(points[0]) + " "
+	// 	+ "C " + movePoint(points[0], initAngle[0] + Math.PI/2, distance) + ", " + movePoint(points[1], initAngle[1] + Math.PI/2, -1*distance) + ", " + points[1].x + " " + points[1].y + " "
+	// 	+ "S " + movePoint(points[2], initAngle[2] + Math.PI/2, -1*distance) + ", " + points[2].x + " " + points[2].y + " "
+	// 	+ "S " + movePoint(points[0], initAngle[0] + Math.PI/2, -1*distance) + ", " + points[0].x + " " + points[0].y + " "
+	const path = ""
+
+	return(
+		<div className={className}>
+			<svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+				<path d={path} />
 			</svg>
 		</div>
 	)
