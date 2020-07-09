@@ -2,7 +2,7 @@
 
 ![Wave](./wave.svg)
 
-Create a random, wavy `svg` image. A few different shapes are planned:
+Create a random, wavy `svg` shapes. A few different shapes are planned:
 
 * [`RandomHLine`](#randomhline)
 * [`RandomVLine`](#randomvline)
