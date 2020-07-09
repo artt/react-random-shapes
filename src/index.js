@@ -1,5 +1,15 @@
 import React from 'react'
 
+class Point {
+	constructor(x, y) {
+		this.x = x
+		this.y = y
+	}
+	toString() {
+		return `${this.x.toFixed(2)} ${this.y.toFixed(2)}`
+	}
+}
+
 function rnd(boundMin, boundMax) {
 	return boundMin + (Math.random() * (boundMax - boundMin))
 }
@@ -10,15 +20,18 @@ function truncate(pos, posMin, posMax) {
 	return Math.min(Math.max(pos, posMin), posMax)
 }
 
-function movePoint(xy, rho, r, { xMin, xMax, yMin, yMax }={}) {
-	// console.log("---", xy, rho, r)
-	// console.log("xxx", xy.x + r * Math.cos(rho))
-	return [truncate(xy.x + r * Math.cos(rho), xMin, xMax),
-					truncate(xy.y + r * Math.sin(rho), yMin, yMax)]
+function movePoint(pt, rho, r, { xMin, xMax, yMin, yMax }={}) {
+	// console.log("---", pt, rho, r)
+	// console.log("xxx", pt.x + r * Math.cos(rho))
+	return new Point(truncate(pt.x + r * Math.cos(rho), xMin, xMax),
+									 truncate(pt.y + r * Math.sin(rho), yMin, yMax))
 }
 
-function ptToString(xy) {
-	return xy[0].toFixed(2) + " " + xy[1].toFixed(2)
+function getPointAttribute(pt, pattern) {
+	let tmp = {}
+	tmp[pattern.replace("?", "x")] = pt.x.toFixed(2)
+	tmp[pattern.replace("?", "y")] = pt.y.toFixed(2)
+	return tmp
 }
 
 function compareArrays(a, b) {
@@ -126,7 +139,7 @@ function getMinDistance(a) {
 	for (let i = 0; i < a.length - 1; i ++) {
 		minDistance = Math.min(
 			minDistance,
-			Math.sqrt(Math.pow(a[i].x - a[i+1].x, 2) + Math.pow(a[i].y - a[i+1].y, 2))
+			Math.sqrt(Math.pow(a[i].point.x - a[i+1].point.x, 2) + Math.pow(a[i].point.y - a[i+1].point.y, 2))
 		)
 	}
 	return minDistance
@@ -220,6 +233,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 	// init data array
 	let data = Array(opt.numControls)
 	for (let i = 0; i < opt.numControls; i ++) {
+		// data[i] = {initX: initX[i], point: {}}
 		data[i] = {initX: initX[i]}
 	}
 
@@ -233,9 +247,10 @@ export function RandomHLine({ width, height, options, override, className }) {
 	convertInteriorPoints(width, height, opt, override, initX, slope, finalLeft)
 
 	for (let i = 0; i < opt.numControls; i ++) {
-		["x", "y", "angle"].forEach(k => {
-			data[i][k] = rnd(override[i][k][1], override[i][k][2])
-		})
+		data[i].angle = rnd(override[i].angle[1], override[i].angle[2])
+		// data[i].point.x = rnd(override[i].x[1], override[i].x[2])
+		// data[i].point.y = rnd(override[i].y[1], override[i].y[2])
+		data[i].point = new Point(rnd(override[i].x[1], override[i].x[2]), rnd(override[i].y[1], override[i].y[2]))
 	}
 
 	if (opt.debug) 
@@ -244,29 +259,29 @@ export function RandomHLine({ width, height, options, override, className }) {
 
 	for (let i = 0; i < opt.numControls; i ++) {
 		data[i].distance = (i === 0 ? 1 : -1) * distance
-		data[i].ctrl = movePoint(data[i], data[i].angle, data[i].distance/2)
-		data[i].ctrl_alt = movePoint(data[i], data[i].angle, -1 * data[i].distance/2)
+		data[i].ctrl = movePoint(data[i].point, data[i].angle, data[i].distance/2)
+		data[i].ctrl_alt = movePoint(data[i].point, data[i].angle, -1 * data[i].distance/2)
 	}
 
 	if (opt.debug)
 		console.log("data with controls", data)
 
-	let midCurve = "C " + ptToString(data[0].ctrl) + ", " + ptToString(data[1].ctrl) + ", " + data[1].x.toFixed(2) + " " + data[1].y.toFixed(2) + " "
+	let midCurve = "C " + data[0].ctrl + ", " + data[1].ctrl + ", " + data[1].point + " "
 	for (let i = 2; i < opt.numControls; i ++) {
-		midCurve += "S " + ptToString(data[i].ctrl) + ", " + data[i].x.toFixed(2) + " " + data[i].y.toFixed(2) + " "
+		midCurve += "S " + data[i].ctrl + ", " + data[i].point + " "
 	}
 	
 	return(
 		<div className={className}>
 			<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height} version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
 				{opt.styleTop !== "none" &&
-					<path d={"M 0 0 " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} className={opt.classNameTop} />
+					<path d={"M 0 0 " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} className={opt.classNameTop} />
 				}
 				{opt.styleBottom !== "none" &&
-					<path d={"M 0 " + height + " " + "V " + data[0].y.toFixed(2) + " " + midCurve + "V " + height + " Z"} style={opt.styleBottom} className={opt.classNameBottom} />
+					<path d={"M 0 " + height + " " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V " + height + " Z"} style={opt.styleBottom} className={opt.classNameBottom} />
 				}
 				{opt.styleMid !== "none" &&
-					<path d={"M 0 " + data[0].y.toFixed(2) + " " + midCurve} style={opt.styleMid} className={opt.classNameMid} />
+					<path d={"M 0 " + data[0].point.y.toFixed(2) + " " + midCurve} style={opt.styleMid} className={opt.classNameMid} />
 				}
 				{opt.debug &&
 					// control points
@@ -274,15 +289,15 @@ export function RandomHLine({ width, height, options, override, className }) {
 						return(
 							<React.Fragment key={"group " + i}>
 								{(i === 0 || i === opt.numControls) &&
-									<line x1={x.ctrl[0].toFixed(2)} y1={x.ctrl[1].toFixed(2)} x2={x.x.toFixed(2)} y2={x.y.toFixed(2)} key={"line " + i} stroke="blue" />
+									<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.point, "?2")} key={"line " + i} stroke="blue" />
 								}
 								{i > 0 && i < opt.numControls &&
-									<line x1={x.ctrl[0].toFixed(2)} y1={x.ctrl[1].toFixed(2)} x2={x.ctrl_alt[0].toFixed(2)} y2={x.ctrl_alt[1].toFixed(2)} key={"line " + i} stroke="blue" />
+									<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.ctrl_alt, "?2")} key={"line " + i} stroke="blue" />
 								}
-								<circle cx={x.x.toFixed(2)} cy={x.y.toFixed(2)} r={4} key={"center " + i} />
-								<circle cx={x.ctrl[0].toFixed(2)} cy={x.ctrl[1].toFixed(2)} r={2} key={"control " + i} />
+								<circle {...getPointAttribute(x.point, "c?")} r={4} key={"center " + i} />
+								<circle {...getPointAttribute(x.ctrl, "c?")} r={2} key={"control " + i} />
 								{i > 0 && i < opt.numControls &&
-									<circle cx={x.ctrl_alt[0].toFixed(2)} cy={x.ctrl_alt[1].toFixed(2)} r={2} key={"control_alt " + i} />
+									<circle {...getPointAttribute(x.ctrl_alt, "c?")} r={2} key={"control_alt " + i} />
 								}
 							</React.Fragment>
 						)
