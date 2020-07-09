@@ -21,8 +21,6 @@ function truncate(pos, posMin, posMax) {
 }
 
 function movePoint(pt, rho, r, { xMin, xMax, yMin, yMax }={}) {
-	// console.log("---", pt, rho, r)
-	// console.log("xxx", pt.x + r * Math.cos(rho))
 	return new Point(truncate(pt.x + r * Math.cos(rho), xMin, xMax),
 									 truncate(pt.y + r * Math.sin(rho), yMin, yMax))
 }
@@ -233,7 +231,6 @@ export function RandomHLine({ width, height, options, override, className }) {
 	// init data array
 	let data = Array(opt.numControls)
 	for (let i = 0; i < opt.numControls; i ++) {
-		// data[i] = {initX: initX[i], point: {}}
 		data[i] = {initX: initX[i]}
 	}
 
@@ -248,8 +245,6 @@ export function RandomHLine({ width, height, options, override, className }) {
 
 	for (let i = 0; i < opt.numControls; i ++) {
 		data[i].angle = rnd(override[i].angle[1], override[i].angle[2])
-		// data[i].point.x = rnd(override[i].x[1], override[i].x[2])
-		// data[i].point.y = rnd(override[i].y[1], override[i].y[2])
 		data[i].point = new Point(rnd(override[i].x[1], override[i].x[2]), rnd(override[i].y[1], override[i].y[2]))
 	}
 
@@ -258,15 +253,14 @@ export function RandomHLine({ width, height, options, override, className }) {
 	const distance = getMinDistance(data)
 
 	for (let i = 0; i < opt.numControls; i ++) {
-		data[i].distance = (i === 0 ? 1 : -1) * distance
-		data[i].ctrl = movePoint(data[i].point, data[i].angle, data[i].distance/2)
-		data[i].ctrl_alt = movePoint(data[i].point, data[i].angle, -1 * data[i].distance/2)
+		data[i].ctrl = movePoint(data[i].point, data[i].angle, -1*distance/2)
+		data[i].ctrl_alt = movePoint(data[i].point, data[i].angle, distance/2)
 	}
 
 	if (opt.debug)
 		console.log("data with controls", data)
 
-	let midCurve = "C " + data[0].ctrl + ", " + data[1].ctrl + ", " + data[1].point + " "
+	let midCurve = "C " + data[0].ctrl_alt + ", " + data[1].ctrl + ", " + data[1].point + " "
 	for (let i = 2; i < opt.numControls; i ++) {
 		midCurve += "S " + data[i].ctrl + ", " + data[i].point + " "
 	}
@@ -288,17 +282,10 @@ export function RandomHLine({ width, height, options, override, className }) {
 					data.map((x, i) => {
 						return(
 							<React.Fragment key={"group " + i}>
-								{(i === 0 || i === opt.numControls) &&
-									<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.point, "?2")} key={"line " + i} stroke="blue" />
-								}
-								{i > 0 && i < opt.numControls &&
-									<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.ctrl_alt, "?2")} key={"line " + i} stroke="blue" />
-								}
+								<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.ctrl_alt, "?2")} key={"line " + i} stroke="blue" />
 								<circle {...getPointAttribute(x.point, "c?")} r={4} key={"center " + i} />
 								<circle {...getPointAttribute(x.ctrl, "c?")} r={2} key={"control " + i} />
-								{i > 0 && i < opt.numControls &&
-									<circle {...getPointAttribute(x.ctrl_alt, "c?")} r={2} key={"control_alt " + i} />
-								}
+								<circle {...getPointAttribute(x.ctrl_alt, "c?")} r={2} key={"control_alt " + i} />
 							</React.Fragment>
 						)
 					})
@@ -323,6 +310,7 @@ export function RandomBlob({ size, options, override, className }) {
 	
 	const opt = {
 		numControls: 3,
+		posWindowSize: 0.1*size,
 		debug: false,
 		...options
 	}
@@ -333,26 +321,38 @@ export function RandomBlob({ size, options, override, className }) {
 	// console.log(tmp + 2)
 
 	const initAngle = getRange(opt.numControls).map(x => tmp + x/opt.numControls*2*Math.PI)
-	const center = {x: size/2, y: size/2}
+	const center = new Point(size/2, size/2)
 
-	const points = initAngle.map(rho => movePoint(center, rho, 100))
+	let data = Array(opt.numControls)
+		for (let i = 0; i < opt.numControls; i ++) {
+		data[i] = {point: movePoint(
+												movePoint(center, initAngle[i], size/2 - 2*opt.posWindowSize),
+												Math.random() * Math.PI*2,
+												Math.random() * opt.posWindowSize)}
+	}
 
-	console.log("=================")
 
-	console.log(points[0])
-	console.log(initAngle[0])
-	console.log(movePoint(points[0], initAngle[0] + Math.PI/2, distance))
+	console.log("=================", data)
 
-	// let path = "M " + ptToString(points[0]) + " "
-	// 	+ "C " + movePoint(points[0], initAngle[0] + Math.PI/2, distance) + ", " + movePoint(points[1], initAngle[1] + Math.PI/2, -1*distance) + ", " + points[1].x + " " + points[1].y + " "
-	// 	+ "S " + movePoint(points[2], initAngle[2] + Math.PI/2, -1*distance) + ", " + points[2].x + " " + points[2].y + " "
-	// 	+ "S " + movePoint(points[0], initAngle[0] + Math.PI/2, -1*distance) + ", " + points[0].x + " " + points[0].y + " "
-	const path = ""
+	// console.log(points)
+	// console.log(initAngle[0])
+	// console.log(movePoint(points[0], initAngle[0] + Math.PI/2, distance))
 
-	return(
+	const points = initAngle.map(rho => movePoint(
+																				movePoint(center, rho, size/2 - 2*opt.posWindowSize),
+																				Math.random() * Math.PI*2,
+																				Math.random() * opt.posWindowSize))
+	let path = "M " + points[0] + " "
+		+ "C " + movePoint(points[0], initAngle[0] + Math.PI/2, distance) + ", " + movePoint(points[1], initAngle[1] + Math.PI/2, -1*distance) + ", " + points[1].x + " " + points[1].y + " "
+		+ "S " + movePoint(points[2], initAngle[2] + Math.PI/2, -1*distance) + ", " + points[2].x + " " + points[2].y + " "
+		+ "S " + movePoint(points[0], initAngle[0] + Math.PI/2, -1*distance) + ", " + points[0].x + " " + points[0].y + " "
+	console.log(path)
+
+
+	return(  
 		<div className={className}>
 			<svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
-				<path d={path} />
+				<path d={path} fill="rgba(255, 0, 0, 0.4)" />
 			</svg>
 		</div>
 	)
