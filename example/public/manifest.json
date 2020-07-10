@@ -1,6 +1,6 @@
 {
-  "short_name": "random-shape",
-  "name": "random-shape",
+  "short_name": "react-random-shapes",
+  "name": "react-random-shapes",
   "icons": [
     {
       "src": "favicon.ico",
