@@ -305,17 +305,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 
 }
 
-export function RandomBlob({ size, options, override, className }) {
-
-	// Override is an array of objects.
-	// If the entry at position i is null, undefined, or "auto", then default is applied.
-	// Each non-auto entry is an object with 3 possible keys: x, y, and angle.
-	// Each key has a value that's an array (or null). The first element of the array
-	// is the "mode" of overriding. There are 3 possible (non-null) modes:
-	// 	- null, undefined, or "auto"
-	// 	- ["p", value]: specify the exact value
-	// 	- ["w", value]: specify the size of the window
-	// 	- ["r", l_bound, u_bound]: specify the minimum and maximum values
+export function RandomBlob({ size, options, className }) {
 	
 	const opt = {
 		numControls: 3,
