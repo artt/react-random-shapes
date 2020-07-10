@@ -17,7 +17,7 @@ This package was inspired by [blobmaker.app](https://www.blobmaker.app/).
 npm install --save react-random-shapes
 ```
 
-## Usage
+## Example Usage
 
 ```jsx
 import React from 'react'
@@ -34,11 +34,11 @@ export default function Example() {
 }
 ```
 
-### `RandomHLine`
+## `RandomHLine`
 
 Generate a horizontal line (going roughly from left to right). `width` and `height` attributes are required.
 
-#### Options
+### Options
 
 Options available are:
 
@@ -55,7 +55,7 @@ Options available are:
 * `classNameMid` (default `""`) Class name for the mid-line part.
 * `debug` (default `false`) Show the handles and control points, as well as console printouts for debug purpose.
 
-#### Overriding
+### Overriding
 
 For more flexibility, you could "override" these points by adding the `override` attribute.
 This should be an array of the same length as the number of control points (the length of the `override` array will override if this is not true.)
@@ -87,11 +87,11 @@ override = [
 ]
 ```
 
-### `RandomBlob`
+## `RandomBlob`
 
 Generate a blob (circle-ish shape). `size` attribute is required.
 
-#### Options
+### Options
 
 Options available are:
 
