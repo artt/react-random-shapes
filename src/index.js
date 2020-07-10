@@ -147,6 +147,23 @@ function getRange(maxNum) {
 	return Array.from(new Array(maxNum), (x, i) => i)
 }
 
+function renderControlPoints(data) {
+	return(
+		<React.Fragment>
+			{data.map((x, i) => {
+				return(
+					<React.Fragment key={"group " + i}>
+						<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.ctrl_alt, "?2")} key={"line " + i} stroke="blue" />
+						<circle {...getPointAttribute(x.point, "c?")} r={4} key={"center " + i} />
+						<circle {...getPointAttribute(x.ctrl, "c?")} r={2} key={"control " + i} />
+						<circle {...getPointAttribute(x.ctrl_alt, "c?")} r={2} key={"control_alt " + i} />
+					</React.Fragment>
+				)
+			})}
+		</React.Fragment>
+	)
+}
+
 export function RandomHLine({ width, height, options, override, className }) {
 
 	// Override is an array of objects.
@@ -267,29 +284,21 @@ export function RandomHLine({ width, height, options, override, className }) {
 	
 	return(
 		<div className={className}>
-			<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height} version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+			<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}
+					version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
 				{opt.styleTop !== "none" &&
-					<path d={"M 0 0 " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V 0 Z"} style={opt.styleTop} className={opt.classNameTop} />
+					<path d={"M 0 0 " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V 0 Z"}
+						style={opt.styleTop} className={opt.classNameTop} />
 				}
 				{opt.styleBottom !== "none" &&
-					<path d={"M 0 " + height + " " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V " + height + " Z"} style={opt.styleBottom} className={opt.classNameBottom} />
+					<path d={"M 0 " + height + " " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V " + height + " Z"}
+						style={opt.styleBottom} className={opt.classNameBottom} />
 				}
 				{opt.styleMid !== "none" &&
-					<path d={"M 0 " + data[0].point.y.toFixed(2) + " " + midCurve} style={opt.styleMid} className={opt.classNameMid} />
+					<path d={"M 0 " + data[0].point.y.toFixed(2) + " " + midCurve}
+						style={opt.styleMid} className={opt.classNameMid} />
 				}
-				{opt.debug &&
-					// control points
-					data.map((x, i) => {
-						return(
-							<React.Fragment key={"group " + i}>
-								<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.ctrl_alt, "?2")} key={"line " + i} stroke="blue" />
-								<circle {...getPointAttribute(x.point, "c?")} r={4} key={"center " + i} />
-								<circle {...getPointAttribute(x.ctrl, "c?")} r={2} key={"control " + i} />
-								<circle {...getPointAttribute(x.ctrl_alt, "c?")} r={2} key={"control_alt " + i} />
-							</React.Fragment>
-						)
-					})
-				}
+				{opt.debug && renderControlPoints(data)}
 			</svg>
 		</div>
 	)
@@ -313,6 +322,8 @@ export function RandomBlob({ size, options, override, className }) {
 		posWindowSize: 0.1*size,
 		angleWindowSize: Math.PI/3,
 		handleWindowSize: 0.5,
+		style: {fill: "grey"},
+		className: "",
 		debug: false,
 		...options
 	}
@@ -347,21 +358,10 @@ export function RandomBlob({ size, options, override, className }) {
 
 	return(  
 		<div className={className}>
-			<svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
-				<path d={path} fill="rgba(255, 0, 0, 0.4)" />
-				{opt.debug &&
-					// control points
-					data.map((x, i) => {
-						return(
-							<React.Fragment key={"group " + i}>
-								<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.ctrl_alt, "?2")} key={"line " + i} stroke="blue" />
-								<circle {...getPointAttribute(x.point, "c?")} r={4} key={"center " + i} />
-								<circle {...getPointAttribute(x.ctrl, "c?")} r={2} key={"control " + i} />
-								<circle {...getPointAttribute(x.ctrl_alt, "c?")} r={2} key={"control_alt " + i} />
-							</React.Fragment>
-						)
-					})
-				}
+			<svg viewBox={`0 0 ${size} ${size}`} width={size} height={size}
+					version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+				<path d={path} style={opt.style} className={opt.className} />
+				{opt.debug && renderControlPoints(data)}
 			</svg>
 		</div>
 	)

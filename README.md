@@ -2,10 +2,9 @@
 
 ![Wave](./wave.svg)
 
-Create random, wavy `svg` shapes. A few different shapes are planned:
+Create random, wavy `svg` shapes. Two available shapes as of now are:
 
 * [`RandomHLine`](#randomhline)
-* [`RandomVLine`](#randomvline)
 * [`RandomBlob`](#randomblob)
 
 This package was inspired by [blobmaker.app](https://www.blobmaker.app/).
@@ -23,18 +22,21 @@ npm install --save react-random-shapes
 ```jsx
 import React from 'react'
 
-import { RandomHLine } from 'react-random-shapes'
+import { RandomHLine, RandomBlob } from 'react-random-shapes'
 
 export default function Example() {
-  return <RandomHLine width={600} height={300} />
+  return(
+    <React.Fragment>
+      <RandomHLine width={600} height={300} />
+      <RandomBlob size={500} />
+    </React.Fragment>
+  )
 }
 ```
 
-For all shapes, `width` and `height` attributes are required. Additionally, various options could be specified.
-
 ### `RandomHLine`
 
-Generates a horizontal line (going roughly from left to right).
+Generate a horizontal line (going roughly from left to right). `width` and `height` attributes are required.
 
 #### Options
 
@@ -51,7 +53,7 @@ Options available are:
 * `classNameTop` (default `""`) Class name for the top part.
 * `classNameBottom` (default `""`) Class name for the bottom part.
 * `classNameMid` (default `""`) Class name for the mid-line part.
-* `showHandles` (default `false`) Show the handles and control points (for debug purpose).
+* `debug` (default `false`) Show the handles and control points, as well as console printouts for debug purpose.
 
 #### Overriding
 
@@ -68,7 +70,7 @@ There are 4 possible modes:
 * `["w", value]`: specify the size of the window while having the center position automatically adjusted.
 * `["r", l_bound, u_bound]`: specify the lower and upper boundries for that key.
 
-#### Examples
+Below is an example of an `override` array.
 
 ```js
 override = [
@@ -85,19 +87,26 @@ override = [
 ]
 ```
 
-### `RandomVLine`
-
-[Not yet available.]
-
 ### `RandomBlob`
 
-[Not yet available.]
+Generate a blob (circle-ish shape). `size` attribute is required.
+
+#### Options
+
+Options available are:
+
+* `numControls` (default `3`) Number of control points the blob should have.
+* `posWindowSize` (default `0.1*size`) Radius of the circle in which the control points could wiggle around.
+* `angleWindowSize` (default `Math.PI/3`) Size of the window in which the angle of the control line could wiggle around.
+* `handleWindowSize` (default `0.5`)
+* `style` (default `{fill: "grey"}`) Style of the blob.
+* `className` (default `""`) Class name for the blob.
+* `debug` (default `false`) Show the handles and control points, as well as console printouts for debug purpose.
 
 ## Todo's
 
-* Implement `RandomVLine` and `RandomBlob`.
-* Accept attribute `width` and `height` as strings.
-* Calculate slope based on two closest fixed points.
+* Accept required attributes as strings.
+* For `RandomHLine`, calculate slope based on two closest fixed points.
 * Add API that will generate random, wavy svg's for all!
 
 ## License
