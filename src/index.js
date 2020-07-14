@@ -56,14 +56,20 @@ function preProcessOverride(width, height, opt, override) {
 
 		["x", "y", "angle"].forEach(k => {
 			if (isAuto(override[i][k])) {
-				if (k === "angle") override[i][k] = ["w", opt.angleWindowSize]
-				else override[i][k] = ["w", opt.posWindowSize]
+				if (k === "angle") {
+					override[i][k] = ["w", opt.angleWindowSize]
+				}
+				else {
+					override[i][k] = ["w", opt.posWindowSize]
+				}
 				if (i === 0)
-					if (k === "x")
+					if (k === "x") {
 						override[i].x = ["r", 0, 0]
+					}
 				if (i === override.length - 1)
-					if (k === "x")
+					if (k === "x") {
 						override[i].x = ["r", width, width]
+					}
 			}
 			else if (override[i][k][0] === "p") {
 				override[i][k] = ["r", override[i][k][1], override[i][k][1]]
@@ -147,103 +153,7 @@ function getRange(maxNum) {
 	return Array.from(new Array(maxNum), (x, i) => i)
 }
 
-function renderControlPoints(data) {
-	return(
-		<React.Fragment>
-			{data.map((x, i) => {
-				return(
-					<React.Fragment key={"group " + i}>
-						<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.ctrl_alt, "?2")} key={"line " + i} stroke="blue" />
-						<circle {...getPointAttribute(x.point, "c?")} r={4} key={"center " + i} />
-						<circle {...getPointAttribute(x.ctrl, "c?")} r={2} key={"control " + i} />
-						<circle {...getPointAttribute(x.ctrl_alt, "c?")} r={2} key={"control_alt " + i} />
-					</React.Fragment>
-				)
-			})}
-		</React.Fragment>
-	)
-}
-
-export function RandomHLine({ width, height, options, override, className }) {
-
-	// Override is an array of objects.
-	// If the entry at position i is null, undefined, or "auto", then default is applied.
-	// Each non-auto entry is an object with 3 possible keys: x, y, and angle.
-	// Each key has a value that's an array (or null). The first element of the array
-	// is the "mode" of overriding. There are 3 possible (non-null) modes:
-	// 	- null, undefined, or "auto"
-	// 	- ["p", value]: specify the exact value
-	// 	- ["w", value]: specify the size of the window
-	// 	- ["r", l_bound, u_bound]: specify the minimum and maximum values
-	
-	const opt = {
-		leftPos: 0.5*height,
-		rightPos: 0.5*height,
-		posWindowSize: 0.2*height,
-		angleWindowSize: Math.PI/3,
-		numControls: 2,
-		styleTop: "none",
-		styleBottom: "none",
-		styleMid: {fill: "transparent", stroke: "black"},
-		classNameTop: "",
-		classNameBottom: "",
-		classNameMid: "",
-		debug: false,
-		...options
-	}
-
-	if (opt.debug)
-		console.log("inital opt", JSON.parse(JSON.stringify(opt)))
-
-	// preprocess override
-	if (!override)
-		override = Array(opt.numControls).fill("auto")
-	preProcessOverride(width, height, opt, override)
-	checkOverride(width, opt, override)
-	convertEndPoints(opt, override)
-	if (opt.debug)
-		console.log("post-processed override", JSON.parse(JSON.stringify(override)))
-
-	// figure out x points first
-	// if (opt.debug) {
-	// 	console.log("0 -", opt.numControls)
-	// 	console.log("1.1 -", [...Array(3).keys()])
-	// 	console.log("1.2 -", [...(Array(3).keys())])
-	// 	console.log("2 -", Array.from(new Array(3), (x, i) => i))
-	// 	console.log("3 -", [0, 1, 2].map(x => x / (opt.numControls - 1) * width))
-	// }
-	let initX = getRange(opt.numControls).map(x => x / (opt.numControls - 1) * width)
-	if (opt.debug)
-		console.log("initX", JSON.parse(JSON.stringify(initX)))
-
-	let lastFixed = 0
-	
-	for (let i = 1; i < opt.numControls; i ++) {
-		if (opt.debug) {
-			console.log("---", i)
-		}
-		if (override[i].x[0] === "r") {
-			initX[i] = (override[i].x[1] + override[i].x[2]) / 2
-			if (opt.debug) {
-				console.log(i, "is in r mode...")
-				console.log(i, initX[i])
-			}
-			if (i - lastFixed > 1) {
-				// do linear interpolation from the last fixed point
-				const lengthInBetween = (initX[i] - initX[lastFixed]) / (i - lastFixed)
-				for (let j = lastFixed + 1; j < i; j ++) {
-					initX[j] = initX[j - 1] + lengthInBetween
-					if (opt.debug) {
-						console.log(j, initX[j])
-					}
-				}
-			}
-			lastFixed = i
-		}
-	}
-
-	if (opt.debug)
-		console.log("initX at the end", initX)
+function genCurve(width, height, opt, override, initX) {
 
 	// init data array
 	let data = Array(opt.numControls)
@@ -281,26 +191,138 @@ export function RandomHLine({ width, height, options, override, className }) {
 	for (let i = 2; i < opt.numControls; i ++) {
 		midCurve += "S " + data[i].ctrl + ", " + data[i].point + " "
 	}
-	
+
+	return {data: data, curve: midCurve}
+
+}
+
+function renderControlPoints(data) {
 	return(
-		<div className={className}>
-			<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}
-					version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
-				{opt.styleTop !== "none" &&
-					<path d={"M 0 0 " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V 0 Z"}
-						style={opt.styleTop} className={opt.classNameTop} />
+		<React.Fragment>
+			{data.map((x, i) => {
+				return(
+					<React.Fragment key={"group " + i}>
+						<line {...getPointAttribute(x.ctrl, "?1")} {...getPointAttribute(x.ctrl_alt, "?2")} key={"line " + i} stroke="blue" />
+						<circle {...getPointAttribute(x.point, "c?")} r={4} key={"center " + i} />
+						<circle {...getPointAttribute(x.ctrl, "c?")} r={2} key={"control " + i} />
+						<circle {...getPointAttribute(x.ctrl_alt, "c?")} r={2} key={"control_alt " + i} />
+					</React.Fragment>
+				)
+			})}
+		</React.Fragment>
+	)
+}
+
+export function RandomHLine({ width, height, options, override, className }) {
+
+	// Override is an array of objects.
+	// If the entry at position i is null, undefined, or "auto", then default is applied.
+	// Each non-auto entry is an object with 3 possible keys: x, y, and angle.
+	// Each key has a value that's an array (or null). The first element of the array
+	// is the "mode" of overriding. There are 3 possible (non-null) modes:
+	// 	- null, undefined, or "auto"
+	// 	- ["p", value]: specify the exact value
+	// 	- ["w", value]: specify the size of the window
+	// 	- ["r", l_bound, u_bound]: specify the minimum and maximum values
+	
+	const opt = {
+		numLines: 1,
+		leftPos: 0.5*height,
+		rightPos: 0.5*height,
+		posWindowSize: 0.2*height,
+		angleWindowSize: Math.PI/3,
+		numControls: 2,
+		styleMid: {fill: "transparent", stroke: "black"},
+		styleTop: "none",
+		styleBottom: "none",
+		classNameTop: "",
+		classNameBottom: "",
+		classNameMid: "",
+		debug: false,
+		...options
+	}
+
+	if (opt.debug)
+		console.log("inital opt", JSON.parse(JSON.stringify(opt)))
+
+	// preprocess override
+	if (!override)
+		override = Array(opt.numControls).fill("auto")
+	preProcessOverride(width, height, opt, override)
+	checkOverride(width, opt, override)
+	convertEndPoints(opt, override)
+
+	if (opt.debug)
+		console.log("post-processed override", JSON.parse(JSON.stringify(override)))
+
+	let initX = getRange(opt.numControls).map(x => x / (opt.numControls - 1) * width)
+	if (opt.debug)
+		console.log("initX", JSON.parse(JSON.stringify(initX)))
+
+	let lastFixed = 0
+	
+	for (let i = 1; i < opt.numControls; i ++) {
+		if (opt.debug) {
+			console.log("---", i)
+		}
+		if (override[i].x[0] === "r") {
+			initX[i] = (override[i].x[1] + override[i].x[2]) / 2
+			if (opt.debug) {
+				console.log(i, "is in r mode...")
+				console.log(i, initX[i])
+			}
+			if (i - lastFixed > 1) {
+				// do linear interpolation from the last fixed point
+				const lengthInBetween = (initX[i] - initX[lastFixed]) / (i - lastFixed)
+				for (let j = lastFixed + 1; j < i; j ++) {
+					initX[j] = initX[j - 1] + lengthInBetween
+					if (opt.debug) {
+						console.log(j, initX[j])
+					}
 				}
-				{opt.styleBottom !== "none" &&
-					<path d={"M 0 " + height + " " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V " + height + " Z"}
-						style={opt.styleBottom} className={opt.classNameBottom} />
-				}
-				{opt.styleMid !== "none" &&
-					<path d={"M 0 " + data[0].point.y.toFixed(2) + " " + midCurve}
-						style={opt.styleMid} className={opt.classNameMid} />
-				}
-				{opt.debug && renderControlPoints(data)}
-			</svg>
-		</div>
+			}
+			lastFixed = i
+		}
+	}
+
+	if (opt.debug)
+		console.log("initX at the end", initX)
+	console.log(typeof(opt.styleMid))
+
+	if (opt.styleTop !== "none" && !Array.isArray(opt.styleTop)) opt.styleTop = [opt.styleTop]
+	if (opt.styleBottom !== "none" && !Array.isArray(opt.styleBottom)) opt.styleBottom = [opt.styleBottom]
+	if (opt.styleMid !== "none" && !Array.isArray(opt.styleMid)) opt.styleMid = [opt.styleMid]
+
+	console.log(opt.styleMid[0 % opt.styleMid.length])
+
+	return(
+		<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}
+				version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg"
+				className={className}>
+			{
+				getRange(opt.numLines).map(i => {
+					let tmp_override = JSON.parse(JSON.stringify(override))
+					let {data, curve: midCurve} = genCurve(width, height, opt, tmp_override, initX)
+					return (
+						<React.Fragment key={"line" + i}>
+							{opt.styleTop !== "none" &&
+								<path d={"M 0 0 " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V 0 Z"}
+									style={opt.styleTop[i % opt.styleTop.length]} className={opt.classNameTop} />
+							}
+							{opt.styleBottom !== "none" &&
+								<path d={"M 0 " + height + " " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V " + height + " Z"}
+									style={opt.styleBottom[i % opt.styleBottom.length]} className={opt.classNameBottom} />
+							}
+							{opt.styleMid !== "none" &&
+								<path d={"M 0 " + data[0].point.y.toFixed(2) + " " + midCurve}
+									style={opt.styleMid[i % opt.styleMid.length]} className={opt.classNameMid} />
+							}
+							{opt.debug && renderControlPoints(data)}
+						</React.Fragment>
+					)
+				})
+			}
+		</svg>
 	)
 
 }
@@ -347,13 +369,12 @@ export function RandomBlob({ size, options, className }) {
 
 
 	return(  
-		<div className={className}>
-			<svg viewBox={`0 0 ${size} ${size}`} width={size} height={size}
-					version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
-				<path d={path} style={opt.style} className={opt.className} />
-				{opt.debug && renderControlPoints(data)}
-			</svg>
-		</div>
+		<svg viewBox={`0 0 ${size} ${size}`} width={size} height={size}
+				version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg"
+				className={className}>
+			<path d={path} style={opt.style} className={opt.className} />
+			{opt.debug && renderControlPoints(data)}
+		</svg>
 	)
 
 }

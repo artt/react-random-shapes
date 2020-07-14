@@ -42,14 +42,15 @@ Generate a horizontal line (going roughly from left to right). `width` and `heig
 
 Options available are:
 
+* `numLines` (default `1`) Number of random lines to be shown.
 * `leftPos` (default `0.5*height`) Vertical position of the left handle.
 * `rightPos` (default `0.5*height`) Similar to `leftPos`.
 * `posWindowSize` (default `0.2*height`) Size of the square in which the control points could wiggle around.
 * `angleWindowSize` (default `Math.PI/3`) Size of the window in which the angle of the control line (measured from the control point) could wiggle around.
 * `numControls` (default `2`) Number of control points the line should have.
+* `styleMid` (default `{fill: "transparent", stroke: "black"}`) Style of the mid-line part. For different styles for each line, use an array of style objects.
 * `styleTop` (default `"none"`) Style of the top part.
 * `styleBottom` (default `"none"`) Style of the bottom part.
-* `styleMid` (default `{fill: "transparent", stroke: "black"}`) Style of the mid-line part.
 * `classNameTop` (default `""`) Class name for the top part.
 * `classNameBottom` (default `""`) Class name for the bottom part.
 * `classNameMid` (default `""`) Class name for the mid-line part.
