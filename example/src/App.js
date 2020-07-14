@@ -10,10 +10,6 @@ const App = () => {
 	const styles = rng.map(x => {
 		return {fill: "transparent", stroke: `hsl(${start + x/numLines*360}, 100%, 50%)`}
 	})
-	console.log(styles)
-
-	const s1 = [{fill: "transparent", stroke: "black"}, {fill: "transparent", stroke: "red"}]
-	const s2 = {fill: "transparent", stroke: "black"}
 
   return(
   	<React.Fragment>
