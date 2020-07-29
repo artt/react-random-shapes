@@ -285,16 +285,16 @@ export function RandomHLine({ width, height, options, override, className }) {
 		}
 	}
 
-	if (opt.debug)
+	if (opt.debug){
 		console.log("initX at the end", initX)
-	console.log(typeof(opt.styleMid))
-
+		console.log(typeof(opt.styleMid))
+	}
 	if (opt.styleTop !== "none" && !Array.isArray(opt.styleTop)) opt.styleTop = [opt.styleTop]
 	if (opt.styleBottom !== "none" && !Array.isArray(opt.styleBottom)) opt.styleBottom = [opt.styleBottom]
 	if (opt.styleMid !== "none" && !Array.isArray(opt.styleMid)) opt.styleMid = [opt.styleMid]
-
-	console.log(opt.styleMid[0 % opt.styleMid.length])
-
+	if (opt.debug){
+		console.log(opt.styleMid[0 % opt.styleMid.length])
+	}
 	return(
 		<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}
 				version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg"
