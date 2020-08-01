@@ -295,6 +295,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 	if (opt.debug){
 		console.log(opt.styleMid[0 % opt.styleMid.length])
 	}
+
 	return(
 		<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}
 				version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg"
@@ -305,17 +306,17 @@ export function RandomHLine({ width, height, options, override, className }) {
 					let {data, curve: midCurve} = genCurve(width, height, opt, tmp_override, initX)
 					return (
 						<React.Fragment key={"line" + i}>
-							{opt.styleTop !== "none" &&
+							{(opt.styleTop !== "none" || opt.classNameTop) &&
 								<path d={"M 0 0 " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V 0 Z"}
-									style={opt.styleTop[i % opt.styleTop.length]} className={opt.classNameTop} />
+									style={opt.styleTop !== "none" ? opt.styleTop[i % opt.styleTop.length] : {}} className={opt.classNameTop} />
 							}
-							{opt.styleBottom !== "none" &&
+							{(opt.styleBottom !== "none" || opt.classNameBottom) &&
 								<path d={"M 0 " + height + " " + "V " + data[0].point.y.toFixed(2) + " " + midCurve + "V " + height + " Z"}
-									style={opt.styleBottom[i % opt.styleBottom.length]} className={opt.classNameBottom} />
+									style={opt.styleBottom !== "none" ? opt.styleBottom[i % opt.styleBottom.length] : {}} className={opt.classNameBottom} />
 							}
-							{opt.styleMid !== "none" &&
+							{(opt.styleMid !== "none" || opt.classNameMid) &&
 								<path d={"M 0 " + data[0].point.y.toFixed(2) + " " + midCurve}
-									style={opt.styleMid[i % opt.styleMid.length]} className={opt.classNameMid} />
+									style={opt.styleMid !== "none" ? opt.styleMid[i % opt.styleMid.length] : {}} className={opt.classNameMid} />
 							}
 							{opt.debug && renderControlPoints(data)}
 						</React.Fragment>
