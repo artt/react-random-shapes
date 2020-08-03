@@ -7,9 +7,9 @@ Create random, wavy `svg` shapes. Two available shapes as of now are:
 * [`RandomHLine`](#randomhline)
 * [`RandomBlob`](#randomblob)
 
-This package was inspired by [blobmaker.app](https://www.blobmaker.app/).
-
 [![NPM](https://img.shields.io/npm/v/react-random-shapes.svg)](https://www.npmjs.com/package/react-random-shapes) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+Note: in v0.4.0, the "core" component was factored out to the [`random-shapes`](https://www.npmjs.com/package/random-shapes) package.
 
 ## Install
 
@@ -109,6 +109,10 @@ Options available are:
 * Accept required attributes as strings.
 * For `RandomHLine`, calculate slope based on two closest fixed points.
 * Add API that will generate random, wavy svg's for all!
+
+## Acknowledgements
+
+This package was inspired by [blobmaker.app](https://www.blobmaker.app/).
 
 ## License
 

@@ -4,6 +4,7 @@
   "description": "Create a random, wavy svg image.",
   "author": "artt",
   "license": "MIT",
+  "homepage": "https://artt.github.io/react-random-shapes/",
   "repository": "artt/react-random-shapes",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
@@ -58,6 +59,6 @@
     "dist"
   ],
   "dependencies": {
-    "random-shapes": "^0.1.4"
+    "random-shapes": "^0.1.5"
   }
 }
