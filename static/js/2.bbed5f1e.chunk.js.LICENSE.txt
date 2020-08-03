@@ -4,6 +4,27 @@ object-assign
 @license MIT
 */
 
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
+ */
+
+/*! /Users/art/GitHub/random-shapes/src/index.js */
+
+/*! exports provided: genHLines, genBlob */
+
+/*! no static exports found */
+
+/*!**********************!*\
+    !*** ./src/index.js ***!
+    \**********************/
+
+/*!****************************!*\
+    !*** multi ./src/index.js ***!
+    \****************************/
+
 /** @license React v0.19.1
  * scheduler.production.min.js
  *
