@@ -13,10 +13,10 @@ const App = () => {
 
   return(
   	<React.Fragment>
-  		<div><RandomHLine width={600} height={300} options={{classNameTop: "abc", styleMid: "none"}} /></div>
+  		<div><RandomHLine width={600} height={300} options={{classNameTop: "abc"}} /></div>
   		<div><RandomHLine width={600} height={300} options={{debug: true}} /></div>
   		<div><RandomHLine width={600} height={300} options={{numLines: numLines, numControls: 4, debug: false, styleMid: styles}} /></div>
-  		<div><RandomBlob size={500} /></div>
+  		<div><RandomBlob size={500} className="svg-blob" options={{style: {fill: "blue"}}}/></div>
 		</React.Fragment>
 	)
 }

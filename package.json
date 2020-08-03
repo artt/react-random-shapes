@@ -56,5 +56,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "random-shapes": "^0.1.4"
+  }
 }
