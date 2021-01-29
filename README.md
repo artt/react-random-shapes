@@ -9,7 +9,9 @@ Create random, wavy `svg` shapes. Two available shapes as of now are:
 
 [![NPM](https://img.shields.io/npm/v/react-random-shapes.svg)](https://www.npmjs.com/package/react-random-shapes) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-Note: in v0.4.0, the "core" component was factored out to the [`random-shapes`](https://www.npmjs.com/package/random-shapes) package.
+You can see a demo on [my site](https://artt.github.io/) at both the top of the page and in the footer.
+
+> Note: in v0.4.0, the "core" component was factored out to the [`random-shapes`](https://www.npmjs.com/package/random-shapes) package.
 
 ## Install
 
