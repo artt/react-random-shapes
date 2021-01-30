@@ -13,7 +13,9 @@ Create random, wavy `svg` shapes. Two available shapes as of now are:
 
 ## Demo
 
-You can see the component's being used on [my site](https://artt.github.io/) at both the top of the page and in the footer.
+A quick demo is [here](https://artt.github.io/react-random-shapes/).
+
+You can also see the components used on [my site](https://artt.github.io/) at both the top of the page and in the footer.
 
 ## Install
 
