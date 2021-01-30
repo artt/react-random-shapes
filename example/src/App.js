@@ -13,10 +13,30 @@ const App = () => {
 
   return(
   	<React.Fragment>
-  		<div><RandomHLine width={600} height={300} options={{classNameTop: "abc"}} /></div>
-  		<div><RandomHLine width={600} height={300} options={{debug: true}} /></div>
-  		<div><RandomHLine width={600} height={300} options={{numLines: numLines, numControls: 4, debug: false, styleMid: styles}} /></div>
-  		<div><RandomBlob size={500} className="svg-blob" options={{style: {fill: "blue"}}}/></div>
+  		<div>
+				Example with class name and seed
+				<div>
+	  			<RandomHLine width={600} height={300} options={{classNameTop: "abc", seed: "hello!"}} />
+  			</div>
+  		</div>
+  		<div>
+  			Example with debug turned on, showing handles
+  			<div>
+	  			<RandomHLine width={600} height={300} options={{debug: true}} />
+  			</div>
+  		</div>
+  		<div>
+  			Example with multiple lines
+  			<div>
+  				<RandomHLine width={600} height={300} options={{numLines: numLines, numControls: 4, debug: false, styleMid: styles}} />
+  			</div>
+  		</div>
+  		<div>
+  			Example with blob
+  			<div>
+  				<RandomBlob size={500} className="svg-blob" options={{style: {fill: "blue"}}} />
+  			</div>
+  		</div>
 		</React.Fragment>
 	)
 }
