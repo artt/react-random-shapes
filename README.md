@@ -13,7 +13,9 @@ Create random, wavy `svg` shapes. Two available shapes as of now are:
 
 ## Demo
 
-You can see the component's being used on [my site](https://artt.github.io/) at both the top of the page and in the footer.
+A quick demo is [here](https://artt.github.io/react-random-shapes/).
+
+You can also see the components used on [my site](https://artt.github.io/) at both the top of the page and in the footer.
 
 ## Install
 
@@ -46,19 +48,20 @@ Generate a horizontal line (going roughly from left to right). `width` and `heig
 
 Options available are:
 
-* `numLines` (default `1`) Number of random lines to be shown.
-* `leftPos` (default `0.5*height`) Vertical position of the left handle.
-* `rightPos` (default `0.5*height`) Similar to `leftPos`.
-* `posWindowSize` (default `0.2*height`) Size of the square in which the control points could wiggle around.
-* `angleWindowSize` (default `Math.PI/3`) Size of the window in which the angle of the control line (measured from the control point) could wiggle around.
-* `numControls` (default `2`) Number of control points the line should have.
-* `styleMid` (default `{fill: "transparent", stroke: "black"}`) Style of the mid-line part. For different styles for each line, use an array of style objects.
-* `styleTop` (default `"none"`) Style of the top part.
-* `styleBottom` (default `"none"`) Style of the bottom part.
-* `classNameTop` (default `""`) Class name for the top part.
-* `classNameBottom` (default `""`) Class name for the bottom part.
-* `classNameMid` (default `""`) Class name for the mid-line part.
-* `debug` (default `false`) Show the handles and control points, as well as console printouts for debug purpose.
+* `numLines = 1` Number of random lines to be shown.
+* `leftPos = 0.5*height` Vertical position of the left handle.
+* `rightPos = 0.5*height` Similar to `leftPos`.
+* `posWindowSize = 0.2*height` Size of the square in which the control points could wiggle around.
+* `angleWindowSize = Math.PI/3` Size of the window in which the angle of the control line (measured from the control point) could wiggle around.
+* `numControls = 2` Number of control points the line should have.
+* `styleMid = {fill: "transparent", stroke: "black"}` Style of the mid-line part. For different styles for each line, use an array of style objects.
+* `styleTop = "none"` Style of the top part.
+* `styleBottom = "none"` Style of the bottom part.
+* `classNameTop = ""` Class name for the top part.
+* `classNameBottom = ""` Class name for the bottom part.
+* `classNameMid = ""` Class name for the mid-line part.
+* `seed = ""` Set a seed string for the pseudorandom number generator.
+* `debug = false` Show the handles and control points, as well as console printouts for debug purpose.
 
 ### Overriding
 
@@ -100,13 +103,14 @@ Generate a blob (circle-ish shape). `size` attribute is required.
 
 Options available are:
 
-* `numControls` (default `3`) Number of control points the blob should have.
-* `posWindowSize` (default `0.1*size`) Radius of the circle in which the control points could wiggle around.
-* `angleWindowSize` (default `Math.PI/3`) Size of the window in which the angle of the control line could wiggle around.
-* `handleWindowSize` (default `0.5`)
-* `style` (default `{fill: "grey"}`) Style of the blob.
-* `className` (default `""`) Class name for the blob.
-* `debug` (default `false`) Show the handles and control points, as well as console printouts for debug purpose.
+* `numControls = 3` Number of control points the blob should have.
+* `posWindowSize = 0.1*size` Radius of the circle in which the control points could wiggle around.
+* `angleWindowSize = Math.PI/3` Size of the window in which the angle of the control line could wiggle around.
+* `handleWindowSize = 0.5`
+* `style = {fill: "grey"}` Style of the blob.
+* `className = ""` Class name for the blob.
+* `seed = ""` Set a seed string for the pseudorandom number generator.
+* `debug = false` Show the handles and control points, as well as console printouts for debug purpose.
 
 ## Todo's
 

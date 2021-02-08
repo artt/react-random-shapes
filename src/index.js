@@ -45,6 +45,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 		classNameTop: "",
 		classNameBottom: "",
 		classNameMid: "",
+		seed: '',
 		debug: false,
 		...options
 	}
@@ -92,6 +93,7 @@ export function RandomBlob({ size, options, className }) {
 	const opt = {
 		style: {fill: "red"},
 		className: "",
+		seed: '',
 		debug: false,
 		...options
 	}
