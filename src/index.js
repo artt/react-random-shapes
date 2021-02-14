@@ -1,5 +1,5 @@
 import React from 'react'
-import {genBlob, genHLines} from 'random-shapes'
+import {genBlob, genHBlobs, genHLines} from 'random-shapes'
 
 function getPointAttribute(pt, pattern) {
 	let tmp = {}
