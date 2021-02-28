@@ -37,6 +37,12 @@ const App = () => {
   				<RandomBlob size={500} className="svg-blob" options={{style: {fill: "blue"}}} />
   			</div>
   		</div>
+      <div>
+        Example with three blobs
+        <div>
+          <RandomBlob size={500} className="svg-blob" options={{numBlobs: 3, style: {stroke: "green", fill: "none"}}} />
+        </div>
+      </div>
 		</React.Fragment>
 	)
 }

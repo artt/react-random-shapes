@@ -103,6 +103,7 @@ Generate a blob (circle-ish shape). `size` attribute is required.
 
 Options available are:
 
+* `numBlobs = 1` Number of blobs to be drawn.
 * `numControls = 3` Number of control points the blob should have.
 * `posWindowSize = 0.1*size` Radius of the circle in which the control points could wiggle around.
 * `angleWindowSize = Math.PI/3` Size of the window in which the angle of the control line could wiggle around.
