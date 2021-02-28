@@ -1,5 +1,5 @@
 import React from 'react'
-import {genBlob, genHLines} from 'random-shapes'
+import {genBlob, genHBlobs, genHLines} from 'random-shapes'
 
 function getPointAttribute(pt, pattern) {
 	let tmp = {}
@@ -91,6 +91,7 @@ export function RandomHLine({ width, height, options, override, className }) {
 export function RandomBlob({ size, options, className }) {
 	
 	const opt = {
+		numBlobs: 1,
 		style: {fill: "red"},
 		className: "",
 		seed: '',
@@ -98,14 +99,23 @@ export function RandomBlob({ size, options, className }) {
 		...options
 	}
 
-	const {path, data} = genBlob(size, opt)
+	const blobs = genHBlobs(size, opt);
+
+	const rendered = []
+	for (let i = 0; i < blobs.length; i += 1) {
+		rendered.push(
+			<path d={blobs[i].path} style={opt.style} className={opt.className} />
+		)
+		if (opt.debug) {
+			rendered.push(renderControlPoints(blobs[i].data))
+		}
+  }
 
 	return(  
 		<svg viewBox={`0 0 ${size} ${size}`} width={size} height={size}
 				version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg"
 				className={className}>
-			<path d={path} style={opt.style} className={opt.className} />
-			{opt.debug && renderControlPoints(data)}
+		  {rendered}
 		</svg>
 	)
 
