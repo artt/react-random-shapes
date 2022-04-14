@@ -58,6 +58,6 @@
     "dist"
   ],
   "dependencies": {
-    "random-shapes": "file:../random-shapes"
+    "random-shapes": "^0.2.2"
   }
 }
